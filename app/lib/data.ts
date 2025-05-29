@@ -11,7 +11,13 @@ const ITEMS_PER_PAGE = 6;
 
 export async function fetchRevenue(): Promise<Revenue[]> {
   try {
+    console.log("Fetching revenue data...");
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const data = await prisma.revenue.findMany();
+
+    console.log("Data fetch completed after 3 seconds.");
+
     return data;
   } catch (error) {
     console.error("Database Error:", error);
@@ -21,7 +27,7 @@ export async function fetchRevenue(): Promise<Revenue[]> {
 
 type LatestInvoice = {
   id: string;
-  amount: string; 
+  amount: string;
   name: string;
   image_url: string;
   email: string;
