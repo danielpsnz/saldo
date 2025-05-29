@@ -1,16 +1,7 @@
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
-import { Invoice } from "@/generated/prisma-client";
 import { fetchLatestInvoices } from "@/app/lib/data";
-
-type LatestInvoice = {
-  id: string;
-  amount: string;
-  name: string;
-  image_url: string;
-  email: string;
-};
 
 export default async function LatestInvoices() {
   const latestInvoices = await fetchLatestInvoices();
