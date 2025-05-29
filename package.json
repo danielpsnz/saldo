@@ -1,12 +1,16 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "start": "next start"
+    "start": "next start",
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@prisma/client": "^6.8.2",
+    "@prisma/extension-accelerate": "^2.0.1",
     "@tailwindcss/forms": "^0.5.10",
     "autoprefixer": "10.4.20",
     "bcrypt": "^5.1.1",
@@ -18,15 +22,19 @@
     "react": "latest",
     "react-dom": "latest",
     "tailwindcss": "3.4.17",
-    "typescript": "5.7.3",
     "use-debounce": "^10.0.4",
+    "uuid": "^11.1.0",
     "zod": "^3.25.17"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/node": "22.10.7",
     "@types/react": "19.0.7",
-    "@types/react-dom": "19.0.3"
+    "@types/react-dom": "19.0.3",
+    "prisma": "^6.8.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
