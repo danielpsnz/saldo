@@ -1,10 +1,26 @@
-import Image from 'next/image';
-import { lusitana } from '@/app/ui/fonts';
-import Search from '@/app/ui/search';
-import {
-  CustomersTableType,
-  FormattedCustomersTable,
-} from '@/app/lib/definitions';
+import Image from "next/image";
+import Search from "@/app/ui/search";
+import { PrismaClient } from "@/generated/prisma-client";
+
+type CustomersTableType = {
+  id: string;
+  name: string;
+  email: string;
+  image_url: string;
+  total_invoices: number;
+  total_pending: string; // formatted currency
+  total_paid: string; // formatted currency
+};
+
+type FormattedCustomersTable = {
+  id: string;
+  name: string;
+  email: string;
+  image_url: string;
+  total_invoices: number;
+  total_pending: string; // formatted currency
+  total_paid: string; // formatted currency
+};
 
 export default async function CustomersTable({
   customers,
@@ -13,9 +29,7 @@ export default async function CustomersTable({
 }) {
   return (
     <div className="w-full">
-      <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
-        Customers
-      </h1>
+      <h1 className={`font-lusitana mb-8 text-xl md:text-2xl`}>Customers</h1>
       <Search placeholder="Search customers..." />
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">

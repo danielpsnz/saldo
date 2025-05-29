@@ -1,5 +1,4 @@
 import '@/app/ui/global.css'
-import { inter } from '@/app/ui/fonts';
 
 export default function RootLayout({
   children,
@@ -8,7 +7,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} antialiased`}>{children}</body>
+      <head>
+                <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lusitana:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={`font-inter antialiased`}>{children}</body>
     </html>
   );
 }
