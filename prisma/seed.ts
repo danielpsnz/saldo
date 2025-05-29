@@ -1,4 +1,4 @@
-import { PrismaClient, InvoiceStatus } from "../app/generated/prisma-client";
+import { PrismaClient, InvoiceStatus } from "../generated/prisma-client";
 import bcrypt from "bcrypt";
 import {
   users,

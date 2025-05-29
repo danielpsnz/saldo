@@ -2,7 +2,7 @@ import {
   PrismaClient,
   InvoiceStatus,
   Revenue,
-} from "@/app/generated/prisma-client";
+} from "@/generated/prisma-client";
 import { formatCurrency } from "./utils";
 
 const prisma = new PrismaClient();
@@ -21,7 +21,7 @@ export async function fetchRevenue(): Promise<Revenue[]> {
 
 type LatestInvoice = {
   id: string;
-  amount: string; // formatted currency string
+  amount: string; 
   name: string;
   image_url: string;
   email: string;
