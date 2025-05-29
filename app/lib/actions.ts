@@ -48,20 +48,27 @@ export async function createInvoice(formData: FormData) {
 
   const amountInCents = amount * 100;
 
-  await prisma.invoice.create({
-    data: {
-      customerId,
-      amount: amountInCents,
-      status,
-      date: new Date(),
-    },
-  });
+  try {
+    await prisma.invoice.create({
+      data: {
+        customerId,
+        amount: amountInCents,
+        status,
+        date: new Date(),
+      },
+    });
+  } catch (error) {
+    // We'll log the error to the console for now
+    console.error(error);
+  }
 
   revalidatePath("/dashboard/invoices");
   redirect("/dashboard/invoices");
 }
 
 export async function deleteInvoice(id: string) {
+    throw new Error('Failed to Delete Invoice');
+    
   await prisma.invoice.delete({
     where: { id },
   });
