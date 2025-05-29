@@ -1,0 +1,46 @@
+// Define database connection via the `DATABASE_URL` env var
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Define custom output path for generated Prisma Client
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma-client"
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+}
+
+model Customer {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  image_url String
+  invoices  Invoice[]
+}
+
+model Invoice {
+  id         String        @id @default(uuid())
+  customer   Customer      @relation(fields: [customerId], references: [id])
+  customerId String
+  amount     Float
+  date       DateTime
+  status     InvoiceStatus
+}
+
+model Revenue {
+  id      String @id @default(uuid()) // Se agrega ID por necesidad de clave primaria
+  month   String
+  revenue Float
+}
+
+enum InvoiceStatus {
+  pending
+  paid
+}

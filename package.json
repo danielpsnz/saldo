@@ -4,7 +4,7 @@
     "build": "next build",
     "dev": "next dev",
     "start": "next start",
-    "seed": "tsx prisma/seed.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -30,6 +30,8 @@
     "@types/node": "22.10.7",
     "@types/react": "19.0.7",
     "@types/react-dom": "19.0.3",
+    "eslint": "^9.27.0",
+    "eslint-config-next": "15.3.3",
     "prisma": "^6.8.2",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.4",

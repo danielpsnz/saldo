@@ -1,16 +1,5 @@
 import Image from "next/image";
 import Search from "@/app/ui/search";
-import { PrismaClient } from "@/generated/prisma-client";
-
-type CustomersTableType = {
-  id: string;
-  name: string;
-  email: string;
-  image_url: string;
-  total_invoices: number;
-  total_pending: string; // formatted currency
-  total_paid: string; // formatted currency
-};
 
 type FormattedCustomersTable = {
   id: string;
