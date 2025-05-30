@@ -1,29 +1,38 @@
-import "@/app/ui/global.css";
-import { Metadata } from 'next';
+import type { Metadata } from "next";
+import { Inter, IBM_Plex_Serif } from "next/font/google";
+import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const ibmPlexSerif = IBM_Plex_Serif({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-ibm-plex-serif",
+});
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Saldo Finance',
-    default: 'Saldo Finance',
+    template: "%s | Saldo Finance",
+    default: "Saldo Finance",
   },
-  description: 'Personal finance wealth management platform.',
-  metadataBase: new URL('https://saldo-beta.vercel.app'),
+  description: "Personal finance wealth management platform.",
+  icons: {
+    icon: "/icons/logo.svg",
+  },
+  metadataBase: new URL("https://saldo-beta.vercel.app"),
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Lusitana:wght@400;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className={`font-inter antialiased`}>{children}</body>
+      <body
+        className={`${inter.variable} ${ibmPlexSerif.variable} antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
