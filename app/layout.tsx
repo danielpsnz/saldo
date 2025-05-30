@@ -1,4 +1,14 @@
 import "@/app/ui/global.css";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Saldo Finance',
+    default: 'Saldo Finance',
+  },
+  description: 'Personal finance wealth management platform.',
+  metadataBase: new URL('https://saldo-beta.vercel.app'),
+};
 
 export default function RootLayout({
   children,
