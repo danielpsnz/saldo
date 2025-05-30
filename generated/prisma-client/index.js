@@ -152,7 +152,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/danielperez/Desktop/nextjs-dashboard/app/generated/prisma-client",
+      "value": "/Users/danielperez/Desktop/nextjs-dashboard/generated/prisma-client",
       "fromEnvVar": null
     },
     "config": {
@@ -171,15 +171,16 @@ const config = {
   },
   "relativeEnvPaths": {
     "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "schemaEnvPath": "../../.env"
   },
-  "relativePath": "../../../prisma",
+  "relativePath": "../../prisma",
   "clientVersion": "6.8.2",
   "engineVersion": "2060c79ba17c6bb9f5823312b6f6b7f4a845738e",
   "datasourceNames": [
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -188,9 +189,9 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// Define database connection via the `DATABASE_URL` env var\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Define custom output path for generated Prisma Client\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../app/generated/prisma-client\"\n}\n\nmodel User {\n  id       String @id @default(uuid())\n  name     String\n  email    String @unique\n  password String\n}\n\nmodel Customer {\n  id        String    @id @default(uuid())\n  name      String\n  email     String    @unique\n  image_url String\n  invoices  Invoice[]\n}\n\nmodel Invoice {\n  id         String        @id @default(uuid())\n  customer   Customer      @relation(fields: [customerId], references: [id])\n  customerId String\n  amount     Float\n  date       DateTime\n  status     InvoiceStatus\n}\n\nmodel Revenue {\n  id      String @id @default(uuid()) // Se agrega ID por necesidad de clave primaria\n  month   String\n  revenue Float\n}\n\nenum InvoiceStatus {\n  pending\n  paid\n}\n",
-  "inlineSchemaHash": "a38bf1c7aa4d2dbc4669fd868ff0216c08b02d26812f2024aa8337bae96763c9",
-  "copyEngine": false
+  "inlineSchema": "// Define database connection via the `DATABASE_URL` env var\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\n// Define custom output path for generated Prisma Client\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/prisma-client\"\n}\n\nmodel User {\n  id       String @id @default(uuid())\n  name     String\n  email    String @unique\n  password String\n}\n\nmodel Customer {\n  id        String    @id @default(uuid())\n  name      String\n  email     String    @unique\n  image_url String\n  invoices  Invoice[]\n}\n\nmodel Invoice {\n  id         String        @id @default(uuid())\n  customer   Customer      @relation(fields: [customerId], references: [id])\n  customerId String\n  amount     Float\n  date       DateTime\n  status     InvoiceStatus\n}\n\nmodel Revenue {\n  id      String @id @default(uuid()) // Se agrega ID por necesidad de clave primaria\n  month   String\n  revenue Float\n}\n\nenum InvoiceStatus {\n  pending\n  paid\n}\n",
+  "inlineSchemaHash": "4bb22ccc4319f22965a33c4b8494c0ae9b1aae1638120998c31735a1d7f7deaf",
+  "copyEngine": true
 }
 
 const fs = require('fs')
@@ -198,8 +199,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "app/generated/prisma-client",
     "generated/prisma-client",
+    "prisma-client",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -227,3 +228,9 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
+// file annotations for bundling tools to include these files
+path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
+path.join(process.cwd(), "generated/prisma-client/libquery_engine-darwin-arm64.dylib.node")
+// file annotations for bundling tools to include these files
+path.join(__dirname, "schema.prisma");
+path.join(process.cwd(), "generated/prisma-client/schema.prisma")
