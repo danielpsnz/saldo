@@ -1,4 +1,5 @@
-import { HomeIcon, BanknotesIcon, ClockIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, BanknotesIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
+import { BriefcaseBusinessIcon, TagIcon } from "lucide-react";
 
 export const sidebarLinks = [
   {
@@ -7,19 +8,24 @@ export const sidebarLinks = [
     icon: HomeIcon,
   },
   {
-    route: "/my-banks",
-    label: "My Banks",
+    route: "/accounts",
+    label: "Accounts",
+    icon: BriefcaseBusinessIcon,
+  },
+  {
+    route: "/transactions",
+    label: "Transactions",
     icon: BanknotesIcon,
   },
   {
-    route: "/transaction-history",
-    label: "Transaction History",
-    icon: ClockIcon,
+    route: "/categories",
+    label: "Categories",
+    icon: TagIcon,
   },
   {
-    route: "/payment-transfer",
-    label: "Transfer Funds",
-    icon: ArrowRightStartOnRectangleIcon,
+    route: "/settings",
+    label: "Settings",
+    icon: Cog6ToothIcon,
   },
 ];
 
