@@ -15,10 +15,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import Footer from "./Footer";
+import { UserButton, useUser } from "@clerk/nextjs";
 
-const MobileNav = ({ user }: MobileNavProps) => {
+const MobileNav = () => {
   const pathname = usePathname();
+  const { user } = useUser();
 
   return (
     <section className="w-full max-w-[264px]">
@@ -38,57 +39,60 @@ const MobileNav = ({ user }: MobileNavProps) => {
             className="cursor-pointer flex items-center gap-1 px-4"
           >
             <Image
-              src="/icons/logo.svg"
-              width={34}
-              height={34}
+              src="/icons/logo-full.svg"
+              width={125}
+              height={50}
               alt="Saldo Finance logo"
             />
-            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-              Saldo
-            </h1>
           </Link>
           <div className="mobilenav-sheet">
             <SheetClose asChild>
-              <nav className="flex h-full flex-col gap-6 pt-16 text-white">
-                {sidebarLinks.map((item) => {
-                  const isActive =
-                    pathname === item.route ||
-                    pathname.startsWith(`${item.route}/`);
+      <nav className="flex flex-1 flex-col">
+        <ul className="flex flex-1 flex-col gap-y-7">
+          <li>
+            <ul className="-mx-2 space-y-1">
+              {sidebarLinks.map((item) => {
+                const isActive = pathname === item.route;
 
-                  return (
-                    <SheetClose asChild key={item.route}>
-                      <Link
-                        href={item.route}
-                        key={item.label}
-                        className={cn("mobilenav-sheet_close w-full", {
-                          "bg-bank-gradient": isActive,
-                        })}
-                      >
-                        <Image
-                          src={item.imgURL}
-                          alt={item.label}
-                          width={20}
-                          height={20}
-                          className={cn({
-                            "brightness-[3] invert-0": isActive,
-                          })}
-                        />
-                        <p
-                          className={cn("text-16 font-semibold text-black-2", {
-                            "text-white": isActive,
-                          })}
-                        >
-                          {item.label}
-                        </p>
-                      </Link>
-                    </SheetClose>
-                  );
-                })}
-                USER
-              </nav>
+                return (
+                  <li key={item.label}>
+                    <Link
+                      href={item.route}
+                      className={cn(
+                        isActive
+                          ? "bg-gray-50 text-[#7e4a24]"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-[#7e4a24]",
+                        "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
+                      )}
+                    >
+                      <item.icon
+                        aria-hidden="true"
+                        className={cn(
+                          isActive
+                            ? "text-[#7e4a24]"
+                            : "text-gray-400 group-hover:text-[#7e4a24]",
+                          "h-6 w-6 shrink-0"
+                        )}
+                      />
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </li>
+
+          <li className="-mx-6 mt-auto">
+            <div className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-gray-900">
+              <UserButton />
+              <span aria-hidden="true">{user?.fullName || "Tom Cook"}</span>
+            </div>
+          </li>
+        </ul>
+      </nav>
             </SheetClose>
             
-            <Footer user={user} type="mobile"/>
+            {/* <Footer user={user} type="mobile"/> */}
           </div>
           <VisuallyHidden>
             <SheetHeader>

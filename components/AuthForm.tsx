@@ -47,6 +47,7 @@ const AuthForm = ({ type }: { type: string }) => {
 
     try {
       // Sign up with Appwrite & create plaid token
+
       if (type === "sign-up") {
         const userData = {
           firstName: data.firstName!,
@@ -60,6 +61,7 @@ const AuthForm = ({ type }: { type: string }) => {
           email: data.email,
           password: data.password,
         };
+
         const newUser = await signUp(userData);
 
         setUser(newUser);
@@ -85,24 +87,17 @@ const AuthForm = ({ type }: { type: string }) => {
       <header className="flex flex-col gap-5 md:gap-8">
         <Link href="/" className="cursor-pointer flex items-center gap-1">
           <Image
-            src="/icons/logo.svg"
-            width={34}
-            height={34}
-            alt="Horizon logo"
+            src="/icons/logo-full.svg"
+            width={250}
+            height={100}
+            alt="Saldo Finance logo"
+            className="mx-auto h-16 w-auto"
           />
-          <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">
-            Horizon
-          </h1>
         </Link>
 
         <div className="flex flex-col gap-1 md:gap-3">
-          <h1 className="text-24 lg:text-36 font-semibold text-gray-900">
+          <h1 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
             {user ? "Link Account" : type === "sign-in" ? "Sign In" : "Sign Up"}
-            <p className="text-16 font-normal text-gray-600">
-              {user
-                ? "Link your account to get started"
-                : "Please enter your details"}
-            </p>
           </h1>
         </div>
       </header>
@@ -176,15 +171,15 @@ const AuthForm = ({ type }: { type: string }) => {
               <CustomInput
                 control={form.control}
                 name="email"
-                label="Email"
-                placeholder="Enter your email"
+                label="Email address"
+                placeholder=""
               />
 
               <CustomInput
                 control={form.control}
                 name="password"
                 label="Password"
-                placeholder="Enter your password"
+                placeholder=""
               />
 
               <div className="flex flex-col gap-4">

@@ -1,23 +1,25 @@
+import { HomeIcon, BanknotesIcon, ClockIcon, ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
+
 export const sidebarLinks = [
   {
-    imgURL: "/icons/home.svg",
     route: "/",
     label: "Home",
+    icon: HomeIcon,
   },
   {
-    imgURL: "/icons/dollar-circle.svg",
     route: "/my-banks",
     label: "My Banks",
+    icon: BanknotesIcon,
   },
   {
-    imgURL: "/icons/transaction.svg",
     route: "/transaction-history",
     label: "Transaction History",
+    icon: ClockIcon,
   },
   {
-    imgURL: "/icons/money-send.svg",
     route: "/payment-transfer",
     label: "Transfer Funds",
+    icon: ArrowRightStartOnRectangleIcon,
   },
 ];
 
@@ -126,6 +128,12 @@ export const transactionCategoryStyles = {
     borderColor: "border-[#12B76A]",
     backgroundColor: "bg-[#12B76A]",
     textColor: "text-[#027A48]",
+    chipBackgroundColor: "bg-[#ECFDF3]",
+  },
+  Travel: {
+    borderColor: "border-[#0047AB]",
+    backgroundColor: "bg-blue-500",
+    textColor: "text-blue-700",
     chipBackgroundColor: "bg-[#ECFDF3]",
   },
   default: {

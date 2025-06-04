@@ -1,64 +1,73 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
 import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
+import { UserButton, useUser } from "@clerk/nextjs";
+import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Footer from "./Footer";
 
-const Siderbar = ({ user }: SidebarProps) => {
+const Sidebar = () => {
   const pathname = usePathname();
-  return (
-    <section className="sidebar">
-      <nav className="flex flex-col gap-4">
-        <Link href="/" className="mb-12 cursor-pointer flex items-center gap-2">
-          <Image
-            src="/icons/logo.svg"
-            width={34}
-            height={34}
-            alt="Saldo Finance logo"
-            className="size-[45px] max-xl:size-14"
-          />
-          <h1 className="sidebar-logo">Saldo</h1>
-        </Link>
-        {sidebarLinks.map((item) => {
-          const isActive =
-            pathname === item.route || pathname.startsWith(`${item.route}/`);
-          return (
-            <Link
-              href={item.route}
-              key={item.label}
-              className={cn("sidebar-link", {
-                "bg-bank-gradient": isActive,
-              })}
-            >
-              <div className="relative size-6">
-                <Image
-                  src={item.imgURL}
-                  alt={item.label}
-                  fill
-                  className={cn({
-                    "brightness-[3] invert-0": isActive,
-                  })}
-                />
-              </div>
-              <p
-                className={cn("sidebar-label", {
-                  "!text-white": isActive,
-                })}
-              >
-                {item.label}
-              </p>
-            </Link>
-          );
-        })}
-        USER
-      </nav>
+  const { user } = useUser();
 
-      <Footer user={user} />
-    </section>
+  return (
+    <div className="sidebar">
+      <Link href="/" className="flex h-16 shrink-0 items-center">
+        <Image
+          src="/icons/logo-full.svg"
+          width={250}
+          height={100}
+          alt="Saldo Finance logo"
+          className="h-8 w-auto"
+        />
+      </Link>
+
+      <nav className="flex flex-1 flex-col">
+        <ul className="flex flex-1 flex-col gap-y-7">
+          <li>
+            <ul className="-mx-2 space-y-1">
+              {sidebarLinks.map((item) => {
+                const isActive = pathname === item.route;
+
+                return (
+                  <li key={item.label}>
+                    <Link
+                      href={item.route}
+                      className={cn(
+                        isActive
+                          ? "bg-gray-50 text-[#7e4a24]"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-[#7e4a24]",
+                        "group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold"
+                      )}
+                    >
+                      <item.icon
+                        aria-hidden="true"
+                        className={cn(
+                          isActive
+                            ? "text-[#7e4a24]"
+                            : "text-gray-400 group-hover:text-[#7e4a24]",
+                          "h-6 w-6 shrink-0"
+                        )}
+                      />
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </li>
+
+          <li className="-mx-6 mt-auto">
+            <div className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-gray-900">
+              <UserButton />
+              <span aria-hidden="true">{user?.fullName || "Tom Cook"}</span>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </div>
   );
 };
 
-export default Siderbar;
+export default Sidebar;

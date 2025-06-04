@@ -1,24 +1,22 @@
-import Image from "next/image";
+import { GradientBackground } from "@/components/ui/gradient";
+import { ClerkProvider } from "@clerk/nextjs";
+import React from "react";
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <main className="flex min-h-screen w-full justify-between font-inter">
-      {children}
-      <div className="auth-asset">
-        <div>
-          <Image
-            src="/icons/auth-image.svg"
-            alt="Auth image"
-            width={500}
-            height={500}
-            className="rounded-l-xl object-contain"
-          />
+    <ClerkProvider>
+      <div className="min-h-screen grid grid-cols-1">
+        <div className="h-full lg:flex flex-col items-center justify-center px-4">
+          <div className="relative text-center">
+            <GradientBackground />
+            <div className="relative z-10">{children}</div>
+          </div>
         </div>
       </div>
-    </main>
+    </ClerkProvider>
   );
 }
