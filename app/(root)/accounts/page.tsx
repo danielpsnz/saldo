@@ -1,7 +1,7 @@
 "use client";
 
 // External imports
-import { Plus } from "lucide-react"; // Icon for the "Add new" button
+import { Loader2, Plus } from "lucide-react"; // Icon for the "Add new" button
 
 // UI component imports
 import HeaderBox from "@/components/HeaderBox";
@@ -12,23 +12,9 @@ import { DataTable } from "@/components/DataTable";
 
 // Feature-specific imports
 import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts";
-import { columns, Payment } from "./columns"; // Table configuration and type
-
-// Temporary mock data (replace with real API call in production)
-const data: Payment[] = [
-  {
-    id: "728ed52f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "728ed52g",
-    amount: 50,
-    status: "success",
-    email: "a@example.com",
-  },
-];
+import { columns } from "./columns"; // Table configuration and type
+import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
+import { Skeleton } from "@/components/ui/skeleton";
 
 /**
  * AccountsPage Component
@@ -39,6 +25,42 @@ const data: Payment[] = [
 const AccountsPage = () => {
   // Hook to control "New Account" sheet or modal state
   const newAccount = useNewAccount();
+  // Hook to fetch accounts
+  const accountsQuery = useGetAccounts();
+  const accounts = accountsQuery.data || [];
+
+  if (accountsQuery.isLoading) {
+    return (
+      <section className="flex">
+        <div className="accounts">
+          {/* Page header */}
+          <HeaderBox
+            title="My Bank Accounts"
+            subtext="Effortlessly manage your banking activites."
+          />
+
+          <Card className="border-none drop-shadow-sm">
+            <CardHeader>
+              <Skeleton className="h-8 w-48" />
+            </CardHeader>
+            <CardContent>
+              <div className="h-[280px] w-full flex items-center justify-center">
+                <Loader2 className="size-6 text-slate-300 animate-spin" />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Bank cards section */}
+          <div className="space-y-4">
+            <h2 className="header-2">Your cards</h2>
+            <div className="flex flex-wrap gap-6">
+              <Skeleton className="h-8 w-48" />
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="flex">
@@ -64,7 +86,7 @@ const AccountsPage = () => {
           <CardContent>
             <DataTable
               columns={columns}
-              data={data}
+              data={accounts}
               filterKey="email" // Enables filtering by email
               onDelete={() => {}} // Placeholder delete handler
               disabled={false}
