@@ -6,8 +6,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { InferResponseType } from "hono";
 import { client } from "@/lib/hono";
+import { Actions } from "./actions";
 
-export type ResponseType = InferResponseType<typeof client.api.accounts.$get, 200>["data"][0];
+export type ResponseType = InferResponseType<
+  typeof client.api.accounts.$get,
+  200
+>["data"][0];
 /**
  * Column configuration for the Payments table.
  * Each object in this array defines how a specific column behaves and is rendered.
@@ -57,5 +61,9 @@ export const columns: ColumnDef<ResponseType>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <Actions id={row.original.id} />,
   },
 ];
