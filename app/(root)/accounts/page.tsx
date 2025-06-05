@@ -15,7 +15,7 @@ import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts";
 import { columns } from "./columns"; // Table configuration and type
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete";
+import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts";
 
 /**
  * AccountsPage Component
@@ -32,8 +32,7 @@ const AccountsPage = () => {
   const accountsQuery = useGetAccounts();
   const accounts = accountsQuery.data || [];
 
-  const isDisabled = 
-  accountsQuery.isLoading || deleteAccounts.isPending;
+  const isDisabled = accountsQuery.isLoading || deleteAccounts.isPending;
 
   if (accountsQuery.isLoading) {
     return (
@@ -41,7 +40,7 @@ const AccountsPage = () => {
         <div className="accounts">
           {/* Page header */}
           <HeaderBox
-            title="My Bank Accounts"
+            title="My accounts"
             subtext="Effortlessly manage your banking activites."
           />
 

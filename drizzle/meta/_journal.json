@@ -15,6 +15,13 @@
       "when": 1749070648308,
       "tag": "0001_solid_bloodstorm",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1749153673725,
+      "tag": "0002_nebulous_vengeance",
+      "breakpoints": true
     }
   ]
 }
