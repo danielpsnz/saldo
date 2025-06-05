@@ -15,6 +15,7 @@ import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts";
 import { columns } from "./columns"; // Table configuration and type
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete";
 
 /**
  * AccountsPage Component
@@ -25,9 +26,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 const AccountsPage = () => {
   // Hook to control "New Account" sheet or modal state
   const newAccount = useNewAccount();
+  // Hook to control "Delete Account" sheet or modal state
+  const deleteAccounts = useBulkDeleteAccounts();
   // Hook to fetch accounts
   const accountsQuery = useGetAccounts();
   const accounts = accountsQuery.data || [];
+
+  const isDisabled = 
+  accountsQuery.isLoading || deleteAccounts.isPending;
 
   if (accountsQuery.isLoading) {
     return (
@@ -88,8 +94,11 @@ const AccountsPage = () => {
               columns={columns}
               data={accounts}
               filterKey="email" // Enables filtering by email
-              onDelete={() => {}} // Placeholder delete handler
-              disabled={false}
+              onDelete={(row) => {
+                const ids = row.map((r) => r.original.id);
+                deleteAccounts.mutate({ ids });
+              }} // Placeholder delete handler
+              disabled={isDisabled}
             />
           </CardContent>
         </Card>

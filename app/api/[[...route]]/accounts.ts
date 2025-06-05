@@ -7,7 +7,8 @@ import { createId } from "@paralleldrive/cuid2"; // Utility to generate unique I
 // Project-specific imports
 import { db } from "@/db/drizzle"; // Database instance configured with Drizzle ORM
 import { accounts, insertAccountSchema } from "@/db/schema"; // Account table schema and validation schema
-import { eq } from "drizzle-orm"; // SQL helper for building WHERE clauses
+import { and, inArray, eq } from "drizzle-orm"; // SQL helper for building WHERE clauses
+import z from "zod";
 
 // Initialize the Hono app
 const app = new Hono()
@@ -62,6 +63,39 @@ const app = new Hono()
         .returning(); // Return the inserted record
 
       // Return the newly created account data
+      return c.json({ data });
+    }
+  )
+
+  .post(
+    "/bulk-delete",
+    clerkMiddleware(),
+    zValidator(
+      "json",
+      z.object({
+        ids: z.array(z.string()),
+      })
+    ),
+    async (c) => {
+      const auth = getAuth(c);
+      const values = c.req.valid("json");
+
+      if (!auth?.userId) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      const data = await db
+        .delete(accounts)
+        .where(
+          and(
+            eq(accounts.userId, auth.userId),
+            inArray(accounts.id, values.ids)
+          )
+        )
+        .returning({
+          id: accounts.id,
+        });
+
       return c.json({ data });
     }
   );
