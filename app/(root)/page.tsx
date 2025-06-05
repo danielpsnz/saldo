@@ -4,9 +4,11 @@ import HeaderBox from "@/components/HeaderBox";
 import RecentTransactions from "@/components/RecentTransactions";
 import RightSidebar from "@/components/RightSidebar";
 import TotalBalanceBox from "@/components/TotalBalanceBox";
+import { Button } from "@/components/ui/button";
+import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts";
 
-const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
-  const currentPage = Number(page as string) || 1;
+const Home =() => {
+      const { onOpen } = useNewAccount();
 
   return (
     <section className="home">
@@ -25,6 +27,7 @@ const Home = async ({ searchParams: { id, page } }: SearchParamProps) => {
             totalCurrentBalance={accounts?.totalCurrentBalance}
           /> */}
         </header>
+        <Button onClick={onOpen}>Add an account</Button>
 
         {/* <RecentTransactions
           accounts={accountsData}

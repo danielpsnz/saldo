@@ -3,6 +3,8 @@ import { Inter, IBM_Plex_Serif } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { QueryProvider } from "@/providers/query-provider";
+import { SheetProvider } from "@/providers/sheet-provider";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const ibmPlexSerif = IBM_Plex_Serif({
@@ -34,7 +36,11 @@ export default function RootLayout({
         <body
           className={`${inter.variable} ${ibmPlexSerif.variable} antialiased`}
         >
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <SheetProvider />
+            <Toaster />
+            {children}
+          </QueryProvider>
         </body>
       </html>
     </ClerkProvider>
