@@ -30,7 +30,7 @@ export const useBulkDeleteAccounts = () => {
 
     // Called on successful account bulk-delete
     onSuccess: () => {
-      toast.success("Account deleted"); // Notify the user
+      toast.success("Accounts deleted"); // Notify the user
       queryClient.invalidateQueries({ queryKey: ["accounts"] }); // Refresh the account list
       // TODO: Also invalidate summary
     },
