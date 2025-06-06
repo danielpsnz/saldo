@@ -1,77 +1,95 @@
+"use client";
+
+// External imports
+import { Loader2, Plus } from "lucide-react"; // Icon for the "Add new" button
+
+// UI component imports
 import HeaderBox from "@/components/HeaderBox";
-import { Pagination } from "@/components/Pagination";
-import TransactionsTable from "@/components/DataTable";
-import { getAccount, getAccounts } from "@/lib/actions/bank.actions";
-import { getLoggedInUser } from "@/lib/actions/user.actions";
-import { formatAmount } from "@/lib/utils";
-import React from "react";
+import BankCard from "@/components/BankCard";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataTable } from "@/components/DataTable";
 
-const TransactionHistory = async ({
-  searchParams: { id, page },
-}: SearchParamProps) => {
-  const currentPage = Number(page as string) || 1;
-  const loggedIn = await getLoggedInUser();
-  const accounts = await getAccounts({
-    userId: loggedIn.$id,
-  });
+// Feature-specific imports
+import { useNewTransaction } from "@/features/transactions/hooks/use-new-transactions";
+import { columns } from "./columns"; // Table configuration and type
+import { useGetTransactions } from "@/features/transactions/api/use-get-transactions";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions";
 
-  if (!accounts) return;
+/**
+ * TransactionsPage Component
+ *
+ * Displays the user's bank transactions and transaction history in a table,
+ * along with an option to create a new transaction and view associated cards.
+ */
+const TransactionsPage = () => {
+  // Hook to control "New transaction" sheet or modal state
+  const newtransaction = useNewTransaction();
+  // Hook to control "Delete transaction" sheet or modal state
+  const deletetransactions = useBulkDeleteTransactions();
+  // Hook to fetch transactions
+  const transactionsQuery = useGetTransactions();
+  const transactions = transactionsQuery.data || [];
 
-  const accountsData = accounts?.data;
-  const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
+  const isDisabled = transactionsQuery.isLoading || deletetransactions.isPending;
 
-  const account = await getAccount({ appwriteItemId });
+  if (transactionsQuery.isLoading) {
+    return (
+      <section className="flex">
+        <div className="transactions">
+          {/* Page header */}
+          <HeaderBox title="Transactions" />
 
-  const rowsPerPage = 10;
-  const totalPages = Math.ceil(account?.transactions.length / rowsPerPage);
-
-  const indexOfLastTransaction = currentPage * rowsPerPage;
-  const indexOfFirstTransaction = indexOfLastTransaction - rowsPerPage;
-
-  const currentTransactions = account?.transactions.slice(
-    indexOfFirstTransaction,
-    indexOfLastTransaction
-  );
-  return (
-    <div className="transactions">
-      <div className="transactions-header">
-        <HeaderBox
-          title="Transaction History"
-          subtext="See your bank details and transactions."
-        />
-      </div>
-
-      <div className="space-y-6">
-        <div className="transactions-account">
-          <div className="flex flex-col gap-2">
-            <h2 className="text-18 font-bold text-white">
-              {account?.data.name}
-            </h2>
-            <p className="text-14 text-blue-25">{account?.data.officialName}</p>
-            <p className="text-14 font-semibold tracking-[1.1px] text-white">
-              ●●●● ●●●● ●●●● {account?.data.mask}
-            </p>
-          </div>
-
-          <div className="transactions-account-balance">
-            <p className="text-14">Current balance</p>
-            <p className="text-24 text-center font-bold">
-              {formatAmount(account?.data.currentBalance)}
-            </p>
-          </div>
+          <Card className="border-none drop-shadow-sm">
+            <CardHeader>
+              <Skeleton className="h-8 w-48" />
+            </CardHeader>
+            <CardContent>
+              <div className="h-[280px] w-full flex items-center justify-center">
+                <Loader2 className="size-6 text-slate-300 animate-spin" />
+              </div>
+            </CardContent>
+          </Card>
         </div>
+      </section>
+    );
+  }
 
-        <section className="flex w-full flex-col gap-6">
-          <TransactionsTable transactions={currentTransactions} />
-          {totalPages > 1 && (
-            <div className="my-4 w-full">
-              <Pagination totalPages={totalPages} page={currentPage} />
-            </div>
-          )}
-        </section>
+  return (
+    <section className="flex">
+      <div className="transactions">
+        {/* Page header */}
+        <HeaderBox title="transactions" />
+
+        {/* transactions table section */}
+        <Card className="border-none drop-shadow-sm">
+          <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between">
+            <CardTitle className="text-xl line-clamp-1">
+              Transaction History
+            </CardTitle>
+            <Button onClick={newtransaction.onOpen} size="sm">
+              <Plus className="size-4 mr-2" />
+              Add new
+            </Button>
+          </CardHeader>
+
+          <CardContent>
+            <DataTable
+            filterKey="date"
+              columns={columns}
+              data={transactions}
+              onDelete={(row) => {
+                const ids = row.map((r) => r.original.id);
+                deletetransactions.mutate({ ids });
+              }} // Placeholder delete handler
+              disabled={isDisabled}
+            />
+          </CardContent>
+        </Card>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default TransactionHistory;
+export default TransactionsPage;

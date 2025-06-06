@@ -11,49 +11,49 @@ import {
 } from "@/components/ui/sheet";
 
 // Internal imports
-import { insertAccountSchema } from "@/db/schema"; // DB schema for form validation
-import { useOpenAccount } from "../hooks/use-open-account"; // UI state hook for controlling the sheet
-import { useEditAccount } from "../api/use-edit-account"; // Custom hook for account update logic
-import { useDeleteAccount } from "../api/use-delete-account"; // Custom hook for account deletion logic
-import { AccountForm } from "./account-form"; // Reusable form component for accounts
-import { useGetAccount } from "../api/use-get-account";
+import { insertTransactionSchema } from "@/db/schema"; // DB schema for form validation
+import { useOpenTransaction } from "../hooks/use-open-transaction"; // UI state hook for controlling the sheet
+import { useEditTransaction } from "../api/use-edit-transaction"; // Custom hook for transaction update logic
+import { useDeleteTransaction } from "../api/use-delete-transaction"; // Custom hook for transaction deletion logic
+import { TransactionForm } from "./transaction-form"; // Reusable form component for transactions
+import { useGetTransaction } from "../api/use-get-transaction";
 import { Loader2 } from "lucide-react";
 
 import { useConfirm } from "@/hooks/use-confirm";
 
 // Define the form schema by selecting only the required fields
-const formSchema = insertAccountSchema.pick({
-  name: true,
+const formSchema = insertTransactionSchema.omit({
+  id: true,
 });
 
 // Type for form values derived from the schema
 type FormValues = z.input<typeof formSchema>;
 
 /**
- * Component to display a slide-over sheet for editing an account.
+ * Component to display a slide-over sheet for editing an transaction.
  *
  * Features:
- * - Controlled via the `useOpenAccount` UI state hook
+ * - Controlled via the `useOpentransaction` UI state hook
  * - Uses Zod for input validation schema
- * - Submits data through `useCreateAccount` mutation
- * - Renders a pre-configured `AccountForm` component
+ * - Submits data through `useCreatetransaction` mutation
+ * - Renders a pre-configured `transactionForm` component
  */
-export const EditAccountSheet = () => {
+export const EditTransactionSheet = () => {
   // Manage sheet open/close state
-  const { isOpen, onClose, id } = useOpenAccount();
+  const { isOpen, onClose, id } = useOpenTransaction();
 
   const [ConfirmationDialog, confirm] = useConfirm(
     "Are you sure?",
-    "You are about to delete this account"
+    "You are about to delete this transaction"
   );
 
-  const accountQuery = useGetAccount(id);
-  const editMutation = useEditAccount(id);
-  const deleteMutation = useDeleteAccount(id);
+  const transactionQuery = useGetTransaction(id);
+  const editMutation = useEditTransaction(id);
+  const deleteMutation = useDeleteTransaction(id);
 
   const isPending = editMutation.isPending || deleteMutation.isPending;
 
-  const isLoading = accountQuery.isLoading;
+  const isLoading = transactionQuery.isLoading;
 
   // Handle form submission
   const onSubmit = (values: FormValues) => {
@@ -76,9 +76,9 @@ export const EditAccountSheet = () => {
     }
   };
 
-  const defaultValues = accountQuery.data
+  const defaultValues = transactionQuery.data
     ? {
-        name: accountQuery.data.name,
+        name: transactionQuery.data.name,
       }
     : {
         name: "",
@@ -90,15 +90,15 @@ export const EditAccountSheet = () => {
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent className="space-y-4">
           <SheetHeader>
-            <SheetTitle>Edit Account</SheetTitle>
-            <SheetDescription>Edit an existing account.</SheetDescription>
+            <SheetTitle>Edit transaction</SheetTitle>
+            <SheetDescription>Edit an existing transaction.</SheetDescription>
           </SheetHeader>
           {isLoading ? (
             <div className="absolute inset-0 flex items-center justify-center">
               <Loader2 className="size-4 text-muted-foreground animate-spin" />
             </div>
           ) : (
-            <AccountForm
+            <TransactionForm
               id={id}
               onSubmit={onSubmit}
               disabled={isPending}

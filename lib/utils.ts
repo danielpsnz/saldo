@@ -8,6 +8,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function convertAmountFromMiliunits(amount: number) {
+  return amount / 1000;
+}
+
+export function convertAmountToMiliunits(amount: number) {
+  return Math.round(amount * 1000)
+}
+
+export function formatCurrency(value: number) {
+return Intl.NumberFormat("de-DE", {
+  style: "currency",
+  currency: "EUR",
+  minimumFractionDigits: 2,
+}).format(value);
+}
+
 // FORMAT DATE TIME
 export const formatDateTime = (dateString: Date) => {
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
@@ -39,22 +55,22 @@ export const formatDateTime = (dateString: Date) => {
   };
 
   const formattedDateTime: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "de-DE",
     dateTimeOptions
   );
 
   const formattedDateDay: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "de-DE",
     dateDayOptions
   );
 
   const formattedDate: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "de-DE",
     dateOptions
   );
 
   const formattedTime: string = new Date(dateString).toLocaleString(
-    "en-US",
+    "de-DE",
     timeOptions
   );
 
@@ -65,16 +81,6 @@ export const formatDateTime = (dateString: Date) => {
     timeOnly: formattedTime,
   };
 };
-
-export function formatAmount(amount: number): string {
-  const formatter = new Intl.NumberFormat("de-DE", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  });
-
-  return formatter.format(amount);
-}
 
 export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
 
@@ -194,21 +200,3 @@ export const getTransactionStatus = (date: Date) => {
 
   return date > twoDaysAgo ? "Processing" : "Success";
 };
-
-export const authFormSchema = (type: string) =>
-  z.object({
-    // sign up
-    firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
-    lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
-    address1: type === "sign-in" ? z.string().optional() : z.string().max(50),
-    city: type === "sign-in" ? z.string().optional() : z.string().max(50),
-    state:
-      type === "sign-in" ? z.string().optional() : z.string().min(2).max(2),
-    postalCode:
-      type === "sign-in" ? z.string().optional() : z.string().min(3).max(6),
-    dateOfBirth: type === "sign-in" ? z.string().optional() : z.string().min(3),
-    ssn: type === "sign-in" ? z.string().optional() : z.string().min(3),
-    // both
-    email: z.string().email(),
-    password: z.string().min(8),
-  });
