@@ -1,28 +1,16 @@
-// External imports
-import { useQuery } from "@tanstack/react-query"; // React Query hook for data fetching
+import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
-
-// Internal imports
-import { client } from "@/lib/hono"; // API client configured with Hono
+import { client } from "@/lib/hono";
 import { convertAmountFromMiliunits } from "@/lib/utils";
 
-/**
- * Custom React hook to fetch a list of transactions from the API.
- *
- * Features:
- * - Uses React Query's `useQuery` to fetch transaction data
- * - Automatically caches and revalidates the data
- * - Throws an error if the fetch fails (to be handled by the consuming component)
- */
 export const useGetTransactions = () => {
-  const params = useSearchParams();
-  const from = params.get("from") || "";
-  const to = params.get("to") || "";
-  const accountId = params.get("accountId") || "";
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from") || "";
+  const to = searchParams.get("to") || "";
+  const accountId = searchParams.get("accountId") || "";
 
   const query = useQuery({
-    // TODO: Check if params are needed in the key
-    queryKey: ["transactions", { from, to, accountId }], // Unique key for caching and refetching
+    queryKey: ["transactions", { from, to, accountId }],
     queryFn: async () => {
       const response = await client.api.transactions.$get({
         query: {
@@ -32,13 +20,10 @@ export const useGetTransactions = () => {
         },
       });
 
-      // Handle non-OK responses
-      if (!response.ok) {
-        throw new Error("Failed to fetch transactions");
-      }
+      if (!response.ok) throw new Error("Failed to fetch transactions.");
 
-      // Destructure and return only the data from the response
       const { data } = await response.json();
+
       return data.map((transaction) => ({
         ...transaction,
         amount: convertAmountFromMiliunits(transaction.amount),
@@ -46,5 +31,5 @@ export const useGetTransactions = () => {
     },
   });
 
-  return query; // Return the query object for use in components
+  return query;
 };

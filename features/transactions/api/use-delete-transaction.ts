@@ -1,49 +1,34 @@
-// External imports
-import { toast } from "sonner"; // Toast notifications for user feedback
-import { useQueryClient, useMutation } from "@tanstack/react-query"; // React Query for data mutations and cache handling
-import { InferRequestType, InferResponseType } from "hono"; // Type inference utilities from Hono
+import { toast } from "sonner";
+import { InferResponseType } from "hono";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-// Internal imports
-import { client } from "@/lib/hono"; // API client configured with Hono
+import { client } from "@/lib/hono";
 
-// Type definitions inferred from the POST endpoint of the transactions API
 type ResponseType = InferResponseType<
   (typeof client.api.transactions)[":id"]["$delete"]
 >;
 
-/**
- * Custom React hook to handle transaction creation using React Query and Hono API client.
- *
- * Features:
- * - Uses React Query's `useMutation` to perform the POST request
- * - Displays toast notifications for success/failure feedback
- * - Invalidates the "transactions" query on successful creation to refetch updated data
- */
 export const useDeleteTransaction = (id?: string) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation<ResponseType, Error>({
-    // Function to perform the API call with the request body (json)
     mutationFn: async () => {
       const response = await client.api.transactions[":id"]["$delete"]({
         param: { id },
       });
+
       return await response.json();
     },
-
-    // Called on successful transaction creation
     onSuccess: () => {
-      toast.success("Transaction deleted"); // Notify the user
+      toast.success("Transaction deleted.");
       queryClient.invalidateQueries({ queryKey: ["transaction", { id }] });
-      queryClient.invalidateQueries({ queryKey: ["transactions"] }); // Refresh the transaction list
-      // TODO: Invalidate summary
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
     },
-
-    // Called if the mutation fails
     onError: () => {
-      toast.error("Failed to delete transaction"); // Notify the user
+      toast.error("Failed to delete transaction.");
     },
   });
 
-  return mutation; // Return mutation object for use in components
+  return mutation;
 };

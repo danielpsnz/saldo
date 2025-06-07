@@ -11,6 +11,9 @@ importers:
       '@clerk/nextjs':
         specifier: ^6.20.2
         version: 6.20.2(next@15.4.0-canary.56(@babel/core@7.27.4)(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@electric-sql/pglite':
+        specifier: ^0.3.3
+        version: 0.3.3
       '@heroicons/react':
         specifier: ^2.2.0
         version: 2.2.0(react@19.1.0)
@@ -94,7 +97,7 @@ importers:
         version: 4.1.0
       drizzle-zod:
         specifier: ^0.8.2
-        version: 0.8.2(drizzle-orm@0.44.2(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3)))(zod@3.25.51)
+        version: 0.8.2(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3)))(zod@3.25.51)
       dwolla-v2:
         specifier: ^3.4.0
         version: 3.4.0
@@ -218,7 +221,7 @@ importers:
         version: 0.31.1
       drizzle-orm:
         specifier: 0.44.2
-        version: 0.44.2(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3))
+        version: 0.44.2(@electric-sql/pglite@0.3.3)(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3))
       eslint:
         specifier: ^9.27.0
         version: 9.28.0(jiti@2.4.2)
@@ -378,6 +381,9 @@ packages:
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
+
+  '@electric-sql/pglite@0.3.3':
+    resolution: {integrity: sha512-JrvHOx9q0yvKEby0bK8qzGTVw6K+yEg8enxDWb2IwNKr5XZxRrBb+GNIqoAIP7yXyhRg5jcENWmdHmtnAT87vA==}
 
   '@emnapi/core@1.4.3':
     resolution: {integrity: sha512-4m62DuCE07lw01soJwPiBGC0nAww0Q+RY70VZ+n49yDIO13yyinhbWCeNnaob0lakDtWQzSdtNWzJeOJt2ma+g==}
@@ -4874,6 +4880,8 @@ snapshots:
 
   '@drizzle-team/brocli@0.10.2': {}
 
+  '@electric-sql/pglite@0.3.3': {}
+
   '@emnapi/core@1.4.3':
     dependencies:
       '@emnapi/wasi-threads': 1.0.2
@@ -7121,8 +7129,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.2(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3)):
+  drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3)):
     optionalDependencies:
+      '@electric-sql/pglite': 0.3.3
       '@neondatabase/serverless': 1.0.0
       '@opentelemetry/api': 1.9.0
       '@types/pg': 8.15.4
@@ -7130,9 +7139,9 @@ snapshots:
       postgres: 3.4.7
       prisma: 6.8.2(typescript@5.8.3)
 
-  drizzle-zod@0.8.2(drizzle-orm@0.44.2(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3)))(zod@3.25.51):
+  drizzle-zod@0.8.2(drizzle-orm@0.44.2(@electric-sql/pglite@0.3.3)(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3)))(zod@3.25.51):
     dependencies:
-      drizzle-orm: 0.44.2(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3))
+      drizzle-orm: 0.44.2(@electric-sql/pglite@0.3.3)(@neondatabase/serverless@1.0.0)(@opentelemetry/api@1.9.0)(@types/pg@8.15.4)(pg@8.16.0)(postgres@3.4.7)(prisma@6.8.2(typescript@5.8.3))
       zod: 3.25.51
 
   dunder-proto@1.0.1:

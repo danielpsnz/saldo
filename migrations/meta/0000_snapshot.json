@@ -1,6 +1,6 @@
 {
-  "id": "0610de20-8b94-47bd-a263-3a661062a255",
-  "prevId": "04f4cfb3-dcdd-47c1-94ff-35780bed180b",
+  "id": "ee2d6fc9-eb9d-4b2a-9458-bb6f37876d05",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -112,8 +112,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "accound_id": {
-          "name": "accound_id",
+        "account_id": {
+          "name": "account_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -127,12 +127,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "transactions_accound_id_accounts_id_fk": {
-          "name": "transactions_accound_id_accounts_id_fk",
+        "transactions_account_id_accounts_id_fk": {
+          "name": "transactions_account_id_accounts_id_fk",
           "tableFrom": "transactions",
           "tableTo": "accounts",
           "columnsFrom": [
-            "accound_id"
+            "account_id"
           ],
           "columnsTo": [
             "id"

@@ -36,7 +36,7 @@ export const useCreateCategory = () => {
 
     // Called if the mutation fails
     onError: () => {
-      toast.error("Failed to create category"); // Notify the user
+      toast.error("Failed to create category."); // Notify the user
     },
   });
 

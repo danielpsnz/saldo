@@ -3,16 +3,16 @@
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useDeleteCategory } from "@/features/categories/api/use-delete-category";
-import { useOpenCategory } from "@/features/categories/hooks/use-open-category";
-import { useConfirm } from "@/hooks/use-confirm";
-import {
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@radix-ui/react-dropdown-menu";
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useDeleteTransaction } from "@/features/transactions/api/use-delete-transaction";
+
+import { useOpenTransaction } from "@/features/transactions/hooks/use-open-transaction";
+
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
+import { useConfirm } from "@/hooks/use-confirm";
 
 type Props = {
   id: string;
@@ -21,11 +21,10 @@ type Props = {
 export const Actions = ({ id }: Props) => {
   const [ConfirmationDialog, confirm] = useConfirm(
     "Are you sure?",
-    "You are about to delete this category."
+    "You are about to delete this transaction."
   );
-
-  const { onOpen } = useOpenCategory();
-  const deleteMutation = useDeleteCategory(id);
+  const deleteMutation = useDeleteTransaction(id);
+  const { onOpen } = useOpenTransaction();
 
   const handleDelete = async () => {
     const ok = await confirm();

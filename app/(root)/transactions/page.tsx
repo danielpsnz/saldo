@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
 
 // Feature-specific imports
-import { useNewTransaction } from "@/features/transactions/hooks/use-new-transactions";
+import { useNewTransaction } from "@/features/transactions/hooks/use-new-transaction";
 import { columns } from "./columns"; // Table configuration and type
 import { useGetTransactions } from "@/features/transactions/api/use-get-transactions";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -29,7 +29,8 @@ const TransactionsPage = () => {
   const transactionsQuery = useGetTransactions();
   const transactions = transactionsQuery.data || [];
 
-  const isDisabled = transactionsQuery.isLoading || deleteTransactions.isPending;
+  const isDisabled =
+    transactionsQuery.isLoading || deleteTransactions.isPending;
 
   if (transactionsQuery.isLoading) {
     return (
@@ -73,13 +74,14 @@ const TransactionsPage = () => {
 
           <CardContent>
             <DataTable
-            filterKey="name"
+              filterKey="payee"
               columns={columns}
               data={transactions}
               onDelete={(row) => {
                 const ids = row.map((r) => r.original.id);
+
                 deleteTransactions.mutate({ ids });
-              }} // Placeholder delete handler
+              }}
               disabled={isDisabled}
             />
           </CardContent>

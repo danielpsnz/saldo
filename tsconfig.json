@@ -30,6 +30,6 @@
     ".next/types/**/*.ts",
     "app/lib/placeholder-data.ts",
     "scripts/seed.js"
-, "app/global-error.jsx"  ],
+, "app/global-error.jsx", "next.config.mjs"  ],
   "exclude": ["node_modules"]
 }

@@ -1,11 +1,7 @@
-import {withSentryConfig} from "@sentry/nextjs";
-import type { NextConfig } from "next";
+import { withSentryConfig } from '@sentry/nextjs';
 
-const nextConfig: NextConfig = {
-  experimental: {
-    ppr: "incremental",
-  },
-};
+/** @type {import('next').NextConfig} */
+const nextConfig = {};
 
 export default withSentryConfig(nextConfig, {
 // For all available options, see:
