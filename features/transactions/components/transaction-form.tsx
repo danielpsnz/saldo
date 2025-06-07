@@ -1,9 +1,12 @@
-import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import { AmountInput } from "@/components/AmountInput";
+import { DatePicker } from "@/components/DatePicker";
+import { Select } from "@/components/Select";
 import { Button } from "@/components/ui/button";
-import { insertTransactionSchema } from "@/db/schema";
 import {
   Form,
   FormControl,
@@ -12,11 +15,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Select } from "@/components/Select";
-import { DatePicker } from "@/components/DatePicker";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { AmountInput } from "@/components/AmountInput";
+import { insertTransactionSchema } from "@/db/schema";
 import { convertAmountToMiliunits } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -65,11 +66,11 @@ export const TransactionForm = ({
 
   const handleSubmit = (values: FormValues) => {
     const amount = parseFloat(values.amount);
-    const amountInMilliunits = convertAmountToMiliunits(amount);
+    const amountInMiliunits = convertAmountToMiliunits(amount);
 
     onSubmit({
       ...values,
-      amount: amountInMilliunits,
+      amount: amountInMiliunits,
     });
   };
 

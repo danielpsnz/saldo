@@ -14,17 +14,18 @@ import { useOpenTransaction } from "@/features/transactions/hooks/use-open-trans
 import { Edit, MoreHorizontal, Trash } from "lucide-react";
 import { useConfirm } from "@/hooks/use-confirm";
 
-type Props = {
+type ActionsProps = {
   id: string;
 };
 
-export const Actions = ({ id }: Props) => {
+export const Actions = ({ id }: ActionsProps) => {
+  const deleteMutation = useDeleteTransaction(id);
+  const { onOpen } = useOpenTransaction();
+
   const [ConfirmationDialog, confirm] = useConfirm(
     "Are you sure?",
     "You are about to delete this transaction."
   );
-  const deleteMutation = useDeleteTransaction(id);
-  const { onOpen } = useOpenTransaction();
 
   const handleDelete = async () => {
     const ok = await confirm();
@@ -33,6 +34,7 @@ export const Actions = ({ id }: Props) => {
       deleteMutation.mutate();
     }
   };
+
   return (
     <>
       <ConfirmationDialog />
