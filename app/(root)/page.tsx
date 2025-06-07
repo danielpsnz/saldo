@@ -6,9 +6,11 @@ import RightSidebar from "@/components/RightSidebar";
 import TotalBalanceBox from "@/components/TotalBalanceBox";
 import { Button } from "@/components/ui/button";
 import { useNewAccount } from "@/features/accounts/hooks/use-new-accounts";
+import { DataCharts } from "@/components/DataCharts";
+import { DataGrid } from "@/components/DataGrid";
 
-const Home =() => {
-      const { onOpen } = useNewAccount();
+const Home = () => {
+  const { onOpen } = useNewAccount();
 
   return (
     <section className="home">
@@ -27,7 +29,8 @@ const Home =() => {
             totalCurrentBalance={accounts?.totalCurrentBalance}
           /> */}
         </header>
-        <Button onClick={onOpen}>Add an account</Button>
+        <DataGrid />
+        <DataCharts />
 
         {/* <RecentTransactions
           accounts={accountsData}

@@ -1,28 +1,21 @@
-// Core dependencies
-import { Hono } from "hono"; // Lightweight web framework for building APIs
-import { clerkMiddleware, getAuth } from "@hono/clerk-auth"; // Clerk authentication middleware and helper
-import { zValidator } from "@hono/zod-validator"; // Zod schema validator middleware
-import { createId } from "@paralleldrive/cuid2"; // Utility to generate unique IDs (CUID)
+import { clerkMiddleware, getAuth } from "@hono/clerk-auth";
+import { zValidator } from "@hono/zod-validator";
+import { createId } from "@paralleldrive/cuid2";
+import { and, eq, inArray } from "drizzle-orm";
+import { Hono } from "hono";
+import { z } from "zod";
 
-// Project-specific imports
-import { db } from "@/db/drizzle"; // Database instance configured with Drizzle ORM
-import { categories, insertCategorySchema } from "@/db/schema"; // Account table schema and validation schema
-import { and, inArray, eq } from "drizzle-orm"; // SQL helper for building WHERE clauses
-import z from "zod";
+import { db } from "@/db/drizzle";
+import { categories, insertCategorySchema } from "@/db/schema";
 
-// Initialize the Hono app
 const app = new Hono()
+  .get("/", clerkMiddleware(), async (ctx) => {
+    const auth = getAuth(ctx);
 
-  // GET / - Fetches categories belonging to the authenticated user
-  .get("/", clerkMiddleware(), async (c) => {
-    const auth = getAuth(c);
-
-    // Ensure the user is authenticated
     if (!auth?.userId) {
-      return c.json({ error: "Unauthorized" }, 401);
+      return ctx.json({ error: "Unauthorized." }, 401);
     }
 
-    // Fetch categories for the authenticated user
     const data = await db
       .select({
         id: categories.id,
@@ -31,8 +24,7 @@ const app = new Hono()
       .from(categories)
       .where(eq(categories.userId, auth.userId));
 
-    // Return the retrieved account data
-    return c.json({ data });
+    return ctx.json({ data });
   })
   .get(
     "/:id",
@@ -43,16 +35,16 @@ const app = new Hono()
       })
     ),
     clerkMiddleware(),
-    async (c) => {
-      const auth = getAuth(c);
-      const { id } = c.req.valid("param");
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const { id } = ctx.req.valid("param");
 
       if (!id) {
-        return c.json({ error: "Missing id" }, 400);
+        return ctx.json({ error: "Missing id." }, 400);
       }
 
       if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" }, 401);
+        return ctx.json({ error: "Unauthorized." }, 401);
       }
 
       const [data] = await db
@@ -64,42 +56,39 @@ const app = new Hono()
         .where(and(eq(categories.userId, auth.userId), eq(categories.id, id)));
 
       if (!data) {
-        return c.json({ error: "Not found" }, 404);
+        return ctx.json({ error: "Not found." }, 404);
       }
 
-      return c.json({ data });
+      return ctx.json({ data });
     }
   )
-
-  // POST / - Creates a new account for the authenticated user
   .post(
     "/",
-    clerkMiddleware(), // Auth middleware to ensure user is logged in
+    clerkMiddleware(),
     zValidator(
       "json",
-      insertCategorySchema.pick({ name: true }) // Validate only the "name" field from the schema
+      insertCategorySchema.pick({
+        name: true,
+      })
     ),
-    async (c) => {
-      const auth = getAuth(c);
-      const values = c.req.valid("json"); // Access validated input
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const values = ctx.req.valid("json");
 
-      // Check if the user is authenticated
       if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" }, 401);
+        return ctx.json({ error: "Unauthorized." }, 401);
       }
 
-      // Insert a new account record into the database
       const [data] = await db
         .insert(categories)
         .values({
-          id: createId(), // Generate a unique ID for the account
-          userId: auth.userId, // Associate the account with the current user
-          ...values, // Spread validated values (only includes name)
+          id: createId(),
+          userId: auth.userId,
+          ...values,
         })
-        .returning(); // Return the inserted record
+        .returning();
 
-      // Return the newly created account data
-      return c.json({ data });
+      return ctx.json({ data });
     }
   )
   .post(
@@ -111,12 +100,12 @@ const app = new Hono()
         ids: z.array(z.string()),
       })
     ),
-    async (c) => {
-      const auth = getAuth(c);
-      const values = c.req.valid("json");
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const values = ctx.req.valid("json");
 
       if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" }, 401);
+        return ctx.json({ error: "Unauthorized." }, 401);
       }
 
       const data = await db
@@ -131,10 +120,9 @@ const app = new Hono()
           id: categories.id,
         });
 
-      return c.json({ data });
+      return ctx.json({ data });
     }
   )
-
   .patch(
     "/:id",
     clerkMiddleware(),
@@ -150,18 +138,17 @@ const app = new Hono()
         name: true,
       })
     ),
-
-    async (c) => {
-      const auth = getAuth(c);
-      const { id } = c.req.valid("param");
-      const values = c.req.valid("json");
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const { id } = ctx.req.valid("param");
+      const values = ctx.req.valid("json");
 
       if (!id) {
-        return c.json({ error: "Missing id" }, 400);
+        return ctx.json({ error: "Missing id." }, 400);
       }
 
       if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" }, 401);
+        return ctx.json({ error: "Unauthorized." }, 401);
       }
 
       const [data] = await db
@@ -171,13 +158,12 @@ const app = new Hono()
         .returning();
 
       if (!data) {
-        return c.json({ error: "Not found" }, 404);
+        return ctx.json({ error: "Not found." }, 404);
       }
 
-      return c.json({ data });
+      return ctx.json({ data });
     }
   )
-
   .delete(
     "/:id",
     clerkMiddleware(),
@@ -187,17 +173,16 @@ const app = new Hono()
         id: z.string().optional(),
       })
     ),
-
-    async (c) => {
-      const auth = getAuth(c);
-      const { id } = c.req.valid("param");
+    async (ctx) => {
+      const auth = getAuth(ctx);
+      const { id } = ctx.req.valid("param");
 
       if (!id) {
-        return c.json({ error: "Missing id" }, 400);
+        return ctx.json({ error: "Missing id." }, 400);
       }
 
       if (!auth?.userId) {
-        return c.json({ error: "Unauthorized" }, 401);
+        return ctx.json({ error: "Unauthorized." }, 401);
       }
 
       const [data] = await db
@@ -208,12 +193,11 @@ const app = new Hono()
         });
 
       if (!data) {
-        return c.json({ error: "Not found" }, 404);
+        return ctx.json({ error: "Not found." }, 404);
       }
 
-      return c.json({ data });
+      return ctx.json({ data });
     }
   );
 
-// Export the app instance for use elsewhere (e.g. server entry point)
 export default app;
