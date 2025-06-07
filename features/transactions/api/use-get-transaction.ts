@@ -15,7 +15,7 @@ import { client } from "@/lib/hono"; // API client configured with Hono
 export const useGetTransaction = (id?: string) => {
   const query = useQuery({
     enabled: !!id,
-    queryKey: ["transactions", { id }], // Unique key for caching and refetching
+    queryKey: ["transaction", { id }], // Unique key for caching and refetching
     queryFn: async () => {
       const response = await client.api.transactions[":id"].$get({
         param: { id },

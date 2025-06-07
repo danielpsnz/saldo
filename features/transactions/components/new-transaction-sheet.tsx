@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sheet";
 
 // Internal imports
-import { accounts, insertTransactionSchema } from "@/db/schema"; // DB schema for form validation
+import { insertTransactionSchema } from "@/db/schema"; // DB schema for form validation
 import { useNewTransaction } from "../hooks/use-new-transactions"; // UI state hook for controlling the sheet
 import { useCreateTransaction } from "../api/use-create-transaction"; // Custom hook for transaction creation logic
 import { TransactionForm } from "./transaction-form"; // Reusable form component for transactions
@@ -27,7 +27,7 @@ const formSchema = insertTransactionSchema.omit({
 });
 
 // Type for form values derived from the schema
-type FormValues = z.input<typeof formSchema>;
+type FormValues = z.infer<typeof formSchema>;
 
 /**
  * Component to display a slide-over sheet for creating a new transaction.
@@ -49,7 +49,7 @@ export const NewTransactionSheet = () => {
   const categoryMutation = useCreateCategory();
   const onCreateCategory = (name: string) =>
     categoryMutation.mutate({
-      name,
+      name
     });
   const categoryOptions = (categoryQuery.data ?? []).map((category) => ({
     label: category.name,
@@ -60,7 +60,7 @@ export const NewTransactionSheet = () => {
   const accountMutation = useCreateAccount();
   const onCreateAccount = (name: string) =>
     accountMutation.mutate({
-      name,
+      name
     });
   const accountOptions = (accountQuery.data ?? []).map((account) => ({
     label: account.name,

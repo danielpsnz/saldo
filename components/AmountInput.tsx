@@ -8,7 +8,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "./ui/button";
 
 type Props = {
   value: string;
@@ -39,7 +38,7 @@ export const AmountInput = ({
       <TooltipProvider>
         <Tooltip delayDuration={100}>
           <TooltipTrigger asChild>
-            <Button
+            <button
               type="button"
               onClick={onReverseValue}
               className={cn(
@@ -51,10 +50,10 @@ export const AmountInput = ({
               {!parsedValue && <Info className="size-3 text-white" />}
               {isIncome && <PlusCircle className="size-3 text-white" />}
               {isExpense && <MinusCircle className="size-3 text-white" />}
-            </Button>
+            </button>
           </TooltipTrigger>
           <TooltipContent>
-            Use [+] for income and [-] for expenses
+            Use [+] for income and [-] for expenses.
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

@@ -70,10 +70,10 @@ export const columns: ColumnDef<ResponseType>[] = [
     cell: ({ row }) => {
       const date = row.getValue("date") as Date;
 
-      return (<span>{format(date, "dd MMMM, yyyy")}</span>);
+      return <span>{format(date, "dd MMMM, yyyy")}</span>;
     },
   },
-    {
+  {
     accessorKey: "category",
     /**
      * Header with interactive sorting.
@@ -91,14 +91,10 @@ export const columns: ColumnDef<ResponseType>[] = [
       );
     },
     cell: ({ row }) => {
-      return (
-      <span>
-        {row.original.category}
-        </span>
-        );
+      return <span>{row.original.category}</span>;
     },
   },
-      {
+  {
     accessorKey: "payee",
     /**
      * Header with interactive sorting.
@@ -116,7 +112,7 @@ export const columns: ColumnDef<ResponseType>[] = [
       );
     },
   },
-      {
+  {
     accessorKey: "amount",
     /**
      * Header with interactive sorting.
@@ -134,21 +130,21 @@ export const columns: ColumnDef<ResponseType>[] = [
       );
     },
     cell: ({ row }) => {
-const amount = parseFloat(row.getValue("amount"));
+      const amount = parseFloat(row.getValue("amount"));
 
       return (
-      <span>
-        <Badge
-        variant={amount < 0 ? "destructive" : "primary"}
-        className="text-xs font-medium px-3.5 py-2.5"
-        >
-        {formatCurrency(amount)}
-        </Badge>
+        <span>
+          <Badge
+            variant={amount < 0 ? "destructive" : "primary"}
+            className="text-xs font-medium px-3.5 py-2.5"
+          >
+            {formatCurrency(amount)}
+          </Badge>
         </span>
-        );
+      );
     },
   },
-      {
+  {
     accessorKey: "account",
     /**
      * Header with interactive sorting.
@@ -166,15 +162,11 @@ const amount = parseFloat(row.getValue("amount"));
       );
     },
     cell: ({ row }) => {
-      return (
-      <span>
-        {row.original.account}
-        </span>
-        );
+      return <span>{row.original.account}</span>;
     },
   },
   {
     id: "actions",
-    cell: ({ row }) => <Actions id={row.original.id} />,
+    cell: ({ row }) => <Actions id={row.original.account} />,
   },
 ];

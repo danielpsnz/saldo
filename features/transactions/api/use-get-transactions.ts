@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 
 // Internal imports
 import { client } from "@/lib/hono"; // API client configured with Hono
+import { convertAmountFromMiliunits } from "@/lib/utils";
 
 /**
  * Custom React hook to fetch a list of transactions from the API.
@@ -38,7 +39,10 @@ export const useGetTransactions = () => {
 
       // Destructure and return only the data from the response
       const { data } = await response.json();
-      return data;
+      return data.map((transaction) => ({
+        ...transaction,
+        amount: convertAmountFromMiliunits(transaction.amount),
+      }));
     },
   });
 

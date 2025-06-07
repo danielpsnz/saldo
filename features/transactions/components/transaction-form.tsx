@@ -18,7 +18,8 @@ import { Select } from "@/components/Select";
 import { DatePicker } from "@/components/DatePicker";
 import { Textarea } from "@/components/ui/textarea";
 import { AmountInput } from "@/components/AmountInput";
-import { convertAmountFromMiliunits } from "@/lib/utils";
+import { convertAmountToMiliunits } from "@/lib/utils";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   date: z.coerce.date(),
@@ -66,7 +67,7 @@ export const TransactionForm = ({
 
   const handleSubmit = (values: FormValues) => {
     const amount = parseFloat(values.amount);
-    const amountInMiliunits = convertAmountFromMiliunits(amount);
+    const amountInMiliunits = convertAmountToMiliunits(amount);
 
     onSubmit({
       ...values,
@@ -127,7 +128,7 @@ export const TransactionForm = ({
               <FormLabel>Category</FormLabel>
               <FormControl>
                 <Select
-                  placeholder="Select an category"
+                  placeholder="Select a category"
                   options={categoryOptions}
                   onCreate={onCreateCategory}
                   value={field.value}
@@ -148,9 +149,9 @@ export const TransactionForm = ({
               <FormLabel>Payee</FormLabel>
               <FormControl>
                 <Input
-                  {...field}
                   disabled={disabled}
                   placeholder="Add a payee"
+                  {...field}
                 />
               </FormControl>
             </FormItem>

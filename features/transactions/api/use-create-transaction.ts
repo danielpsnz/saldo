@@ -32,6 +32,7 @@ export const useCreateTransaction = () => {
     onSuccess: () => {
       toast.success("Transaction created!"); // Notify the user
       queryClient.invalidateQueries({ queryKey: ["transactions"] }); // Refresh the transaction list
+      // TODO: Invalidate summary
     },
 
     // Called if the mutation fails

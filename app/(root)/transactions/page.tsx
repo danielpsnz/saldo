@@ -24,15 +24,12 @@ import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-
  * along with an option to create a new transaction and view associated cards.
  */
 const TransactionsPage = () => {
-  // Hook to control "New transaction" sheet or modal state
-  const newtransaction = useNewTransaction();
-  // Hook to control "Delete transaction" sheet or modal state
-  const deletetransactions = useBulkDeleteTransactions();
-  // Hook to fetch transactions
+  const newTransaction = useNewTransaction();
+  const deleteTransactions = useBulkDeleteTransactions();
   const transactionsQuery = useGetTransactions();
   const transactions = transactionsQuery.data || [];
 
-  const isDisabled = transactionsQuery.isLoading || deletetransactions.isPending;
+  const isDisabled = transactionsQuery.isLoading || deleteTransactions.isPending;
 
   if (transactionsQuery.isLoading) {
     return (
@@ -60,7 +57,7 @@ const TransactionsPage = () => {
     <section className="flex">
       <div className="transactions">
         {/* Page header */}
-        <HeaderBox title="transactions" />
+        <HeaderBox title="Transactions" />
 
         {/* transactions table section */}
         <Card className="border-none drop-shadow-sm">
@@ -68,7 +65,7 @@ const TransactionsPage = () => {
             <CardTitle className="text-xl line-clamp-1">
               Transaction History
             </CardTitle>
-            <Button onClick={newtransaction.onOpen} size="sm">
+            <Button onClick={newTransaction.onOpen} size="sm">
               <Plus className="size-4 mr-2" />
               Add new
             </Button>
@@ -76,12 +73,12 @@ const TransactionsPage = () => {
 
           <CardContent>
             <DataTable
-            filterKey="date"
+            filterKey="name"
               columns={columns}
               data={transactions}
               onDelete={(row) => {
                 const ids = row.map((r) => r.original.id);
-                deletetransactions.mutate({ ids });
+                deleteTransactions.mutate({ ids });
               }} // Placeholder delete handler
               disabled={isDisabled}
             />
