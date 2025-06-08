@@ -6,7 +6,7 @@ import categories from "./categories";
 import summary from "./summary";
 import transactions from "./transactions";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 const app = new Hono().basePath("/api");
 

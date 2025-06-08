@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import QueryProvider from "@/providers/query-provider";
 import { SheetProvider } from "@/providers/sheet-provider";
 import { Toaster } from "sonner";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const ibmPlexSerif = IBM_Plex_Serif({
@@ -38,8 +39,10 @@ export default function RootLayout({
         >
           <QueryProvider>
             <SheetProvider />
-            <Toaster />
-            {children}
+            <Suspense>
+              <Toaster />
+              {children}
+            </Suspense>
           </QueryProvider>
         </body>
       </html>
