@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { insertTransactionSchema } from "@/db/schema";
+import { transactionInputSchema } from "@/db/schema";
 import { useCreateAccount } from "@/features/accounts/api/use-create-account";
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
 import { useCreateCategory } from "@/features/categories/api/use-create-category";
@@ -21,9 +21,8 @@ import { useConfirm } from "@/hooks/use-confirm";
 
 import { TransactionForm } from "./transaction-form";
 
-const formSchema = insertTransactionSchema.omit({ id: true });
-
-type FormValues = z.infer<typeof formSchema>;
+const formSchema = transactionInputSchema;
+type FormValues = z.input<typeof formSchema>;
 
 export const EditTransactionSheet = () => {
   const { isOpen, onClose, id } = useOpenTransaction();
@@ -67,7 +66,9 @@ export const EditTransactionSheet = () => {
     accountQuery.isLoading;
 
   const onSubmit = (values: FormValues) => {
-    editMutation.mutate(values, {
+    const parsedValues = transactionInputSchema.parse(values);
+
+    editMutation.mutate(parsedValues, {
       onSuccess: () => {
         onClose();
       },

@@ -5,7 +5,6 @@ import { Loader2, Plus } from "lucide-react"; // Icon for the "Add new" button
 
 // UI component imports
 import HeaderBox from "@/components/HeaderBox";
-import BankCard from "@/components/BankCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
@@ -39,7 +38,7 @@ const CategoriesPage = () => {
       <section className="flex">
         <div className="categories">
           {/* Page header */}
-          <HeaderBox title="categories" />
+          <HeaderBox title="categories"/>
 
           <Card className="border-none drop-shadow-sm">
             <CardHeader>
@@ -60,7 +59,7 @@ const CategoriesPage = () => {
     <section className="flex">
       <div className="categories">
         {/* Page header */}
-        <HeaderBox title="Categories" />
+        <HeaderBox title="Categories"/>
 
         {/* Categories table section */}
         <Card className="border-none drop-shadow-sm">

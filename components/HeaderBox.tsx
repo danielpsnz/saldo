@@ -1,13 +1,16 @@
-"use client"
+"use client";
 
 import { useUser } from "@clerk/nextjs";
 import React from "react";
 
-const HeaderBox = ({
-  type = "title",
-  title,
-  subtext,
-}: HeaderBoxProps) => {
+type HeaderBoxProps = {
+  type?: string;
+  title: string;
+  subtext?: string;
+  user?: string;
+};
+
+const HeaderBox = ({ type = "title", title, subtext }: HeaderBoxProps) => {
   const { user } = useUser();
   return (
     <div className="header-box">

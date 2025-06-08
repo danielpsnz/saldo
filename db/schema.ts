@@ -14,6 +14,10 @@ export const accountsRelations = relations(accounts, ({ many }) => ({
   transactions: many(transactions),
 }));
 
+export const accountInputSchema = z.object({
+  name: z.string(),
+});
+
 export const insertAccountSchema = createInsertSchema(accounts);
 
 export const categories = pgTable("categories", {
@@ -26,6 +30,10 @@ export const categories = pgTable("categories", {
 export const categoriesRelations = relations(categories, ({ many }) => ({
   transactions: many(transactions),
 }));
+
+export const categoryInputSchema = z.object({
+  name: z.string(),
+});
 
 export const insertCategorySchema = createInsertSchema(categories);
 

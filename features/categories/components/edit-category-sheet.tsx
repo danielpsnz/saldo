@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sheet";
 
 // Internal imports
-import { insertCategorySchema } from "@/db/schema"; // DB schema for form validation
+import { categoryInputSchema } from "@/db/schema"; // DB schema for form validation
 import { useOpenCategory } from "../hooks/use-open-category"; // UI state hook for controlling the sheet
 import { useEditCategory } from "../api/use-edit-category"; // Custom hook for category update logic
 import { useDeleteCategory } from "../api/use-delete-category"; // Custom hook for category deletion logic
@@ -22,9 +22,7 @@ import { Loader2 } from "lucide-react";
 import { useConfirm } from "@/hooks/use-confirm";
 
 // Define the form schema by selecting only the required fields
-const formSchema = insertCategorySchema.pick({
-  name: true,
-});
+const formSchema = categoryInputSchema;
 
 // Type for form values derived from the schema
 type FormValues = z.input<typeof formSchema>;

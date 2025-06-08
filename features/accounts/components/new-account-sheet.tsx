@@ -11,15 +11,13 @@ import {
 } from "@/components/ui/sheet";
 
 // Internal imports
-import { insertAccountSchema } from "@/db/schema"; // DB schema for form validation
+import { accountInputSchema } from "@/db/schema"; // DB schema for form validation
 import { useNewAccount } from "../hooks/use-new-accounts"; // UI state hook for controlling the sheet
 import { useCreateAccount } from "../api/use-create-account"; // Custom hook for account creation logic
 import { AccountForm } from "./account-form"; // Reusable form component for accounts
 
 // Define the form schema by selecting only the required fields
-const formSchema = insertAccountSchema.pick({
-  name: true,
-});
+const formSchema = accountInputSchema;
 
 // Type for form values derived from the schema
 type FormValues = z.input<typeof formSchema>;
@@ -45,7 +43,7 @@ export const NewAccountSheet = () => {
     mutation.mutate(values, {
       onSuccess: () => {
         onClose();
-      }
+      },
     });
   };
 

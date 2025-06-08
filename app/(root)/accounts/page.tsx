@@ -5,7 +5,6 @@ import { Loader2, Plus } from "lucide-react"; // Icon for the "Add new" button
 
 // UI component imports
 import HeaderBox from "@/components/HeaderBox";
-import BankCard from "@/components/BankCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DataTable } from "@/components/DataTable";
@@ -41,8 +40,7 @@ const AccountsPage = () => {
           {/* Page header */}
           <HeaderBox
             title="My accounts"
-            subtext="Effortlessly manage your banking activites."
-          />
+            subtext="Effortlessly manage your banking activites."/>
 
           <Card className="border-none drop-shadow-sm">
             <CardHeader>
@@ -92,7 +90,7 @@ const AccountsPage = () => {
             <DataTable
               columns={columns}
               data={accounts}
-              filterKey="email" // Enables filtering by email
+              filterKey="name"
               onDelete={(row) => {
                 const ids = row.map((r) => r.original.id);
                 deleteAccounts.mutate({ ids });

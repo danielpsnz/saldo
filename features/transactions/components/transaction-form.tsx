@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { insertTransactionSchema } from "@/db/schema";
+import { insertTransactionSchema, transactionInputSchema } from "@/db/schema";
 import { convertAmountToMiliunits } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -29,9 +29,7 @@ const formSchema = z.object({
   notes: z.string().nullable().optional(),
 });
 
-const apiSchema = insertTransactionSchema.omit({
-  id: true,
-});
+const apiSchema = transactionInputSchema;
 
 type FormValues = z.input<typeof formSchema>;
 type ApiFormValues = z.input<typeof apiSchema>;

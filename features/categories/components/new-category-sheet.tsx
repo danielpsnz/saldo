@@ -11,15 +11,13 @@ import {
 } from "@/components/ui/sheet";
 
 // Internal imports
-import { insertCategorySchema } from "@/db/schema"; // DB schema for form validation
+import { categoryInputSchema } from "@/db/schema"; // DB schema for form validation
 import { useNewCategory } from "../hooks/use-new-category"; // UI state hook for controlling the sheet
 import { useCreateCategory } from "../api/use-create-category"; // Custom hook for category creation logic
 import { CategoryForm } from "./category-form"; // Reusable form component for categorys
 
 // Define the form schema by selecting only the required fields
-const formSchema = insertCategorySchema.pick({
-  name: true,
-});
+const formSchema = categoryInputSchema;
 
 // Type for form values derived from the schema
 type FormValues = z.input<typeof formSchema>;

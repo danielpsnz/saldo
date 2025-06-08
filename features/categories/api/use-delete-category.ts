@@ -1,7 +1,7 @@
 // External imports
 import { toast } from "sonner"; // Toast notifications for user feedback
 import { useQueryClient, useMutation } from "@tanstack/react-query"; // React Query for data mutations and cache handling
-import { InferRequestType, InferResponseType } from "hono"; // Type inference utilities from Hono
+import { InferResponseType } from "hono"; // Type inference utilities from Hono
 
 // Internal imports
 import { client } from "@/lib/hono"; // API client configured with Hono

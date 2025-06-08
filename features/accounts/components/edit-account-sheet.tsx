@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sheet";
 
 // Internal imports
-import { insertAccountSchema } from "@/db/schema"; // DB schema for form validation
+import { accountInputSchema } from "@/db/schema"; // DB schema for form validation
 import { useOpenAccount } from "../hooks/use-open-account"; // UI state hook for controlling the sheet
 import { useEditAccount } from "../api/use-edit-account"; // Custom hook for account update logic
 import { useDeleteAccount } from "../api/use-delete-account"; // Custom hook for account deletion logic
@@ -22,9 +22,7 @@ import { Loader2 } from "lucide-react";
 import { useConfirm } from "@/hooks/use-confirm";
 
 // Define the form schema by selecting only the required fields
-const formSchema = insertAccountSchema.pick({
-  name: true,
-});
+const formSchema = accountInputSchema;
 
 // Type for form values derived from the schema
 type FormValues = z.input<typeof formSchema>;

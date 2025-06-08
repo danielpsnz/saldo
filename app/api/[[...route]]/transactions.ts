@@ -11,6 +11,7 @@ import {
   accounts,
   categories,
   insertTransactionSchema,
+  transactionInputSchema,
   transactions,
 } from "@/db/schema";
 
@@ -115,15 +116,13 @@ const app = new Hono()
   .post(
     "/",
     clerkMiddleware(),
-    zValidator(
-      "json",
-      insertTransactionSchema.omit({
-        id: true,
-      })
-    ),
+    zValidator("json", transactionInputSchema),
+
     async (ctx) => {
       const auth = getAuth(ctx);
       const values = ctx.req.valid("json");
+
+      console.log("Received values:", values);
 
       if (!auth?.userId) {
         return ctx.json({ error: "Unauthorized." }, 401);
@@ -143,7 +142,7 @@ const app = new Hono()
   .post(
     "/bulk-create",
     clerkMiddleware(),
-    zValidator("json", z.array(insertTransactionSchema.omit({ id: true }))),
+    zValidator("json", z.array(transactionInputSchema)),
     async (ctx) => {
       const auth = getAuth(ctx);
       const values = ctx.req.valid("json");

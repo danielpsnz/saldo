@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { insertTransactionSchema } from "@/db/schema";
+import { transactionInputSchema } from "@/db/schema";
 import { useCreateAccount } from "@/features/accounts/api/use-create-account";
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
 import { useCreateCategory } from "@/features/categories/api/use-create-category";
@@ -18,9 +18,8 @@ import { useNewTransaction } from "@/features/transactions/hooks/use-new-transac
 
 import { TransactionForm } from "./transaction-form";
 
-const formSchema = insertTransactionSchema.omit({ id: true });
-
-type FormValues = z.infer<typeof formSchema>;
+const formSchema = transactionInputSchema;
+type FormValues = z.input<typeof formSchema>;
 
 export const NewTransactionSheet = () => {
   const { isOpen, onClose } = useNewTransaction();
@@ -50,7 +49,9 @@ export const NewTransactionSheet = () => {
   const isLoading = categoryQuery.isLoading || accountQuery.isLoading;
 
   const onSubmit = (values: FormValues) => {
-    createMutation.mutate(values, {
+    const parsedValues = transactionInputSchema.parse(values);
+
+    createMutation.mutate(parsedValues, {
       onSuccess: () => {
         onClose();
       },

@@ -87,7 +87,7 @@ const TransactionsPage = () => {
       <section className="flex">
         <div className="transactions">
           {/* Page header */}
-          <HeaderBox title="Transactions" />
+          <HeaderBox title="Transactions" type={""} subtext={""} user={""} />
 
           <Card className="border-none drop-shadow-sm">
             <CardHeader>
@@ -122,7 +122,7 @@ const TransactionsPage = () => {
     <section className="flex">
       <div className="transactions">
         {/* Page header */}
-        <HeaderBox title="Transactions" />
+        <HeaderBox title="Transactions" type={""} subtext={""} user={""} />
 
         {/* transactions table section */}
         <Card className="border-none drop-shadow-sm">
