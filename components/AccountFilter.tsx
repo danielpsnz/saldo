@@ -46,24 +46,24 @@ export const AccountFilter = () => {
 
   const { data: accounts, isLoading: isLoadingAccounts } = useGetAccounts();
   return (
-    <Select
-      value={accountId}
-      onValueChange={onChange}
-      disabled={isLoadingAccounts || isLoadingSummary}
-    >
-      <SelectTrigger className="h-9 w-full rounded-md border-none bg-white/10 px-3 font-normal text-white outline-none transition hover:bg-white/30 hover:text-white focus:bg-white/30 focus:ring-transparent focus:ring-offset-0 lg:w-auto">
-        <SelectValue placeholder="Select account" />
-      </SelectTrigger>
+      <Select
+        value={accountId}
+        onValueChange={onChange}
+        disabled={isLoadingAccounts || isLoadingSummary}
+      >
+        <SelectTrigger className="h-9 w-full rounded-md border-none bg-white/10 px-3 font-normal text-white outline-none transition hover:bg-white/30 hover:text-white focus:bg-white/30 focus:ring-transparent focus:ring-offset-0 lg:w-auto">
+          <SelectValue placeholder="Select account" />
+        </SelectTrigger>
 
-      <SelectContent>
-        <SelectItem value="all">All accounts</SelectItem>
+        <SelectContent>
+          <SelectItem value="all">All accounts</SelectItem>
 
-        {accounts?.map((account) => (
-          <SelectItem key={account.id} value={account.id}>
-            {account.name}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+          {accounts?.map((account) => (
+            <SelectItem key={account.id} value={account.id}>
+              {account.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
   );
 };

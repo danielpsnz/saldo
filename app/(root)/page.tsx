@@ -3,6 +3,7 @@
 import HeaderBox from "@/components/HeaderBox";
 import { DataCharts } from "@/components/DataCharts";
 import { DataGrid } from "@/components/DataGrid";
+import { Suspense } from "react";
 
 const Home = () => {
   return (
@@ -16,7 +17,11 @@ const Home = () => {
             subtext="Access and manage your account and transactions efficiently."
           />
         </header>
-        <DataGrid />
+
+        <Suspense>
+          <DataGrid />
+        </Suspense>
+        
         <DataCharts />
       </div>
     </section>

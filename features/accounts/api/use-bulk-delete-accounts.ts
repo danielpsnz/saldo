@@ -32,7 +32,7 @@ export const useBulkDeleteAccounts = () => {
     onSuccess: () => {
       toast.success("Accounts deleted"); // Notify the user
       queryClient.invalidateQueries({ queryKey: ["accounts"] }); // Refresh the account list
-      // TODO: Also invalidate summary
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
     },
 
     // Called if the mutation fails

@@ -38,7 +38,7 @@ export const useBulkDeleteCategories = () => {
     onSuccess: () => {
       toast.success("Categories deleted"); // Notify the user
       queryClient.invalidateQueries({ queryKey: ["categories"] }); // Refresh the category list
-      // TODO: Also invalidate summary
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
     },
 
     // Called if the mutation fails

@@ -40,7 +40,8 @@ export const useEditCategory = (id?: string) => {
       toast.success("Category updated"); // Notify the user
       queryClient.invalidateQueries({ queryKey: ["category", { id }] });
       queryClient.invalidateQueries({ queryKey: ["categories"] }); // Refresh the category list
-      // TODO: Invalidate summary and transactions
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
     },
 
     // Called if the mutation fails

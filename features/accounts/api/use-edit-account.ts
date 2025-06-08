@@ -40,7 +40,8 @@ export const useEditAccount = (id?: string) => {
       toast.success("Account updated"); // Notify the user
       queryClient.invalidateQueries({ queryKey: ["account", { id }] });
       queryClient.invalidateQueries({ queryKey: ["accounts"] }); // Refresh the account list
-      // TODO: Invalidate summary and transactions
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["summary"] });
     },
 
     // Called if the mutation fails

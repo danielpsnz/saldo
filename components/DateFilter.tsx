@@ -60,54 +60,54 @@ export const DateFilter = () => {
   };
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          disabled={false}
-          size="sm"
-          variant="outline"
-          className="h-9 w-full rounded-md border-none bg-white/10 px-3 font-normal text-white outline-none transition hover:bg-white/30 hover:text-white focus:bg-white/30 focus:ring-transparent focus:ring-offset-0 lg:w-auto"
-        >
-          <span>{formatDateRange(paramState)}</span>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            disabled={false}
+            size="sm"
+            variant="outline"
+            className="h-9 w-full rounded-md border-none bg-white/10 px-3 font-normal text-white outline-none transition hover:bg-white/30 hover:text-white focus:bg-white/30 focus:ring-transparent focus:ring-offset-0 lg:w-auto"
+          >
+            <span>{formatDateRange(paramState)}</span>
 
-          <ChevronDown className="ml-2 size-4 opacity-50" />
-        </Button>
-      </PopoverTrigger>
+            <ChevronDown className="ml-2 size-4 opacity-50" />
+          </Button>
+        </PopoverTrigger>
 
-      <PopoverContent className="w-full p-0 lg:w-auto" align="start">
-        <Calendar
-          disabled={false}
-          initialFocus
-          mode="range"
-          defaultMonth={date?.from}
-          selected={date}
-          onSelect={setDate}
-          numberOfMonths={2}
-        />
+        <PopoverContent className="w-full p-0 lg:w-auto" align="start">
+          <Calendar
+            disabled={false}
+            initialFocus
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={setDate}
+            numberOfMonths={2}
+          />
 
-        <div className="flex w-full items-center gap-x-2 p-4">
-          <PopoverClose asChild>
-            <Button
-              onClick={onReset}
-              disabled={!date?.from || !date?.to}
-              className="w-full"
-              variant="outline"
-            >
-              Reset
-            </Button>
-          </PopoverClose>
+          <div className="flex w-full items-center gap-x-2 p-4">
+            <PopoverClose asChild>
+              <Button
+                onClick={onReset}
+                disabled={!date?.from || !date?.to}
+                className="w-full"
+                variant="outline"
+              >
+                Reset
+              </Button>
+            </PopoverClose>
 
-          <PopoverClose asChild>
-            <Button
-              onClick={() => pushToUrl(date)}
-              disabled={!date?.from || !date?.to}
-              className="w-full"
-            >
-              Apply
-            </Button>
-          </PopoverClose>
-        </div>
-      </PopoverContent>
-    </Popover>
+            <PopoverClose asChild>
+              <Button
+                onClick={() => pushToUrl(date)}
+                disabled={!date?.from || !date?.to}
+                className="w-full"
+              >
+                Apply
+              </Button>
+            </PopoverClose>
+          </div>
+        </PopoverContent>
+      </Popover>
   );
 };
