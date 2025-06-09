@@ -1,6 +1,6 @@
 "use client";
 
-import React, { JSX } from "react";
+import React, { JSX, useRef, useState } from "react";
 import { SignOutButton, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { completeOnboarding } from "./_actions";
@@ -13,14 +13,16 @@ import { Transition } from "@headlessui/react";
 import { useQueryParam } from "@/hooks/use-query-param";
 
 import { useOnboarding } from "@/hooks/use-onboarding";
-import { useUpdateOnboarding } from "@/hooks/use-update-onboarding";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import OnboardingPreferencesFirst from "@/features/onboarding/steps/onboarding-preferences-1";
+import OnboardingPreferencesSecond from "@/features/onboarding/steps/onboarding-preferences-2";
 
 function getStepComponent(stepKey?: string): (props: StepProps) => JSX.Element {
   switch (stepKey) {
     case "preferences_first":
       return OnboardingPreferencesFirst;
+    case "preferences_second":
+      return OnboardingPreferencesSecond;
     case "setup":
     default:
       return OnboardingSetup;
@@ -28,13 +30,10 @@ function getStepComponent(stepKey?: string): (props: StepProps) => JSX.Element {
 }
 
 export default function OnboardingPage() {
-  const { user } = useUser();
   const router = useRouter();
-  const [error, setError] = React.useState("");
 
   const stepParam = useQueryParam("step", "string");
   const onboarding = useOnboarding();
-  const updateOnboarding = useUpdateOnboarding();
 
   if (!onboarding?.data) {
     return <div>Loading onboarding...</div>;
@@ -47,16 +46,6 @@ export default function OnboardingPage() {
   );
   const StepComponent = getStepComponent(currentStep?.key);
 
-  const handleSubmit = async (formData: FormData) => {
-    const res = await completeOnboarding(formData);
-    if (res?.message) {
-      await user?.reload();
-      router.push("/");
-    } else if (res?.error) {
-      setError(res.error);
-    }
-  };
-
   async function prev() {
     if (currentStepIdx > 0) {
       router.push(`/onboarding?step=${steps[currentStepIdx - 1].key}`);
@@ -64,11 +53,6 @@ export default function OnboardingPage() {
   }
 
   async function next() {
-    await updateOnboarding.mutateAsync({
-      flow: "main",
-      updates: [{ key: currentStep.key, markedComplete: true }],
-    });
-
     if (currentStepIdx < steps.length - 1) {
       router.push(`/onboarding?step=${steps[currentStepIdx + 1].key}`);
     } else {
@@ -78,7 +62,7 @@ export default function OnboardingPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-8 shadow-md">
+      <div className="w-full max-w-lg space-y-8 rounded-xl bg-white p-8 shadow-md">
         {currentStep.group && currentStep.group !== "account" && (
           <OnboardingNavbar
             steps={steps}

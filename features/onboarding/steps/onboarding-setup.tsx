@@ -14,12 +14,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { StepProps } from "@/types";
+import { completeOnboarding } from "@/app/onboarding/_actions";
+import { useUser } from "@clerk/nextjs";
 
 const onBoardingSetupSchema = z.object({
   household: z.string().min(2).max(50),
 });
 
-export default function OnboardingSetup({ title, onNext, onPrev }: StepProps) {
+export default function OnboardingSetup({
+  title,
+  onNext,
+  onPrev
+}: StepProps) {
   const form = useForm<z.infer<typeof onBoardingSetupSchema>>({
     resolver: zodResolver(onBoardingSetupSchema),
     defaultValues: {
@@ -27,9 +33,28 @@ export default function OnboardingSetup({ title, onNext, onPrev }: StepProps) {
     },
   });
 
-  function onSubmit(values: z.infer<typeof onBoardingSetupSchema>) {
-    console.log(values);
-  }
+  const { user } = useUser();
+
+  const handleSubmit = async (
+    data: z.infer<typeof onBoardingSetupSchema>
+  ) => {
+    try {
+      // Convertir el objeto a FormData
+      const formData = new FormData();
+      formData.append("household", data.household);
+
+      // Llamar a la función que espera FormData
+      await completeOnboarding(formData);
+
+      if (user?.reload) {
+        await user.reload();
+      }
+
+      onNext();
+    } catch (err) {
+      console.error("Error saving household:", err);
+    }
+  };
 
   return (
     <>
@@ -42,7 +67,7 @@ export default function OnboardingSetup({ title, onNext, onPrev }: StepProps) {
 
       {/* Form */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="household"
@@ -64,7 +89,6 @@ export default function OnboardingSetup({ title, onNext, onPrev }: StepProps) {
           <div className="my-5">
             <Button
               type="submit"
-              onClick={onNext}
               className="w-full bg-[#3e4e32] hover:bg-[#2e3e24] text-white"
             >
               Continue

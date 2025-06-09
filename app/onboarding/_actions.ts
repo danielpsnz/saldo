@@ -3,20 +3,23 @@
 import { auth, clerkClient } from "@clerk/nextjs/server";
 
 export const completeOnboarding = async (formData: FormData) => {
+    const client = await clerkClient()
   const { userId } = await auth();
 
   if (!userId) {
-    return { message: "No Logged In User" };
+    return { message: "User not authenticated" };
   }
-
-  const client = await clerkClient();
 
   try {
     const res = await client.users.updateUser(userId, {
       publicMetadata: {
         onboardingComplete: true,
-        applicationName: formData.get("applicationName"),
-        applicationType: formData.get("applicationType"),
+        household: formData.get("household"),
+        preferred_currency: formData.get("preferred_currency"),
+        preferred_language: formData.get("preferred_language"),
+        country: formData.get("country"),
+        date_format: formData.get("date_format"),
+        theme: formData.get("theme"),
       },
     });
     return { message: res.publicMetadata };

@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -21,6 +20,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUser } from "@clerk/nextjs";
+import { completeOnboarding } from "@/app/onboarding/_actions";
 
 const onBoardingPreferencesFirstSchema = z.object({
   preferred_currency: z.string().min(2).max(50),
@@ -28,7 +29,12 @@ const onBoardingPreferencesFirstSchema = z.object({
   country: z.string().min(2).max(50),
 });
 
-export default function OnboardingPreferencesFirst({ title, onNext, onPrev }: StepProps) {
+export default function OnboardingPreferencesFirst({
+  title,
+  onNext,
+  onPrev,
+  saveStepData,
+}: StepProps) {
   const form = useForm<z.infer<typeof onBoardingPreferencesFirstSchema>>({
     resolver: zodResolver(onBoardingPreferencesFirstSchema),
     defaultValues: {
@@ -38,9 +44,33 @@ export default function OnboardingPreferencesFirst({ title, onNext, onPrev }: St
     },
   });
 
-  function onSubmit(values: z.infer<typeof onBoardingPreferencesFirstSchema>) {
-    console.log(values);
-  }
+  const { user } = useUser();
+
+  const handleSubmit = async (
+    data: z.infer<typeof onBoardingPreferencesFirstSchema>
+  ) => {
+    try {
+      // Guardar localmente si quieres
+      saveStepData?.(data);
+
+      // Convertir el objeto a FormData
+      const formData = new FormData();
+      formData.append("preferred_currency", data.preferred_currency);
+      formData.append("preferred_language", data.preferred_language);
+      formData.append("country", data.country);
+
+      // Llamar a la función que espera FormData
+      await completeOnboarding(formData);
+
+      if (user?.reload) {
+        await user.reload();
+      }
+
+      onNext();
+    } catch (err) {
+      console.error("Error saving data:", err);
+    }
+  };
 
   return (
     <>
@@ -53,18 +83,18 @@ export default function OnboardingPreferencesFirst({ title, onNext, onPrev }: St
 
       {/* Form */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="preferred_currency"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel className="text-sm text-gray-600">
                   Currency
                 </FormLabel>
                 <FormControl>
                   <Select>
-                    <SelectTrigger className="w-[280px]">
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select your preferred currency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -77,6 +107,63 @@ export default function OnboardingPreferencesFirst({ title, onNext, onPrev }: St
               </FormItem>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="preferred_language"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">
+                  Preferred Language
+                </FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select your preferred language" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="en">English</SelectItem>
+                      <SelectItem value="fr">French</SelectItem>
+                      <SelectItem value="es">Spanish</SelectItem>
+                      <SelectItem value="de">German</SelectItem>
+                      <SelectItem value="zh">Chinese</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-sm text-gray-600">Country</FormLabel>
+                <FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select your country" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="us">United States</SelectItem>
+                      <SelectItem value="gb">United Kingdom</SelectItem>
+                      <SelectItem value="fr">France</SelectItem>
+                      <SelectItem value="de">Germany</SelectItem>
+                      <SelectItem value="es">Spain</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
           <div className="my-5">
             <Button
               type="submit"
