@@ -7,24 +7,19 @@ export default function Page() {
       <ClerkLoaded>
         <SignUp
           appearance={{
-            layout: {},
             elements: {
               formButtonPrimary: {
                 fontSize: 14,
                 textTransform: "none",
-                backgroundColor: "#EFD5C3",
-                color: "black",
+                backgroundColor: "#576447",
+                color: "white",
                 "&:hover, &:focus, &:active": {
-                  backgroundColor: "#FFD4CA",
+                  backgroundColor: "#5B5F49",
+                  border: "none",
                 },
               },
-              logoBox: {
-                justifyContent: "center",
-                alignItems: "center",
-              },
-              logoImage: {
-                height: "250px",
-                width: "100px",
+              footer: {
+                backgroundColor: "white",
               },
             },
           }}

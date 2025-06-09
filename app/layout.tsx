@@ -33,9 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className="h-full bg-white">
         <body
-          className={`${inter.variable} ${ibmPlexSerif.variable} antialiased`}
+          className={`${inter.variable} ${ibmPlexSerif.variable} antialiased h-full`}
         >
           <QueryProvider>
             <SheetProvider />
