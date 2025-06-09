@@ -6,7 +6,7 @@ const config = {
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    "./features/**/*.{ts,tsx}",
     "./constants/**/*.{ts,tsx}",
   ],
   prefix: "",
@@ -20,10 +20,11 @@ const config = {
     },
     extend: {
       colors: {
+        cactusGreen: "#576447",
+        miniGreen: "#D5EFD6",
         fill: {
           1: "rgba(255, 255, 255, 0.10)",
         },
-        bankGradient: "#FFD4CA",
         indigo: {
           500: "#6172F3",
           700: "#3538CD",

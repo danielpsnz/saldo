@@ -61,7 +61,7 @@ const Sidebar = () => {
           <li className="-mx-6 mt-auto">
             <div className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-gray-900">
               <UserButton />
-              <span aria-hidden="true">{user?.fullName || "Tom Cook"}</span>
+              <span aria-hidden="true">{user?.fullName || "Guest"}</span>
             </div>
           </li>
         </ul>
