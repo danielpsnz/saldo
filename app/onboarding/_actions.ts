@@ -19,7 +19,6 @@ export const completeOnboarding = async (formData: FormData) => {
         preferred_language: formData.get("preferred_language"),
         country: formData.get("country"),
         date_format: formData.get("date_format"),
-        theme: formData.get("theme"),
       },
     });
     return { message: res.publicMetadata };

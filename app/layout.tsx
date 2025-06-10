@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, IBM_Plex_Serif } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ThemeProvider } from "@/providers/theme-provider"
 import QueryProvider from "@/providers/query-provider";
 import { SheetProvider } from "@/providers/sheet-provider";
 import { Toaster } from "sonner";
@@ -33,17 +34,19 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" className="h-full bg-white">
+      <html lang="en" className="h-full bg-gray-50 dark:bg-gray-950" suppressHydrationWarning>
         <body
           className={`${inter.variable} ${ibmPlexSerif.variable} antialiased h-full`}
         >
-          <QueryProvider>
-            <SheetProvider />
-            <Suspense>
-              <Toaster />
-              {children}
-            </Suspense>
-          </QueryProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <QueryProvider>
+              <SheetProvider />
+              <Suspense>
+                <Toaster />
+                {children}
+              </Suspense>
+            </QueryProvider>
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

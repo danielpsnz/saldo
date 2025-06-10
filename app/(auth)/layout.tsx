@@ -8,7 +8,7 @@ export default function AuthLayout({
 }>) {
   return (
     <ClerkProvider>
-      <div className="flex min-h-full">
+      <div className="flex min-h-full bg-white dark:bg-black">
         <div className="relative hidden flex-[2] lg:block">
           <img
             alt="Saldo Finance logo"
